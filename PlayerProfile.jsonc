@@ -1,0 +1,31 @@
+{
+  "name": "PlayerProfile",
+  "type": "object",
+  "properties": {
+    "owner_id": {
+      "type": "string",
+      "description": "Anonymous ID of the player"
+    },
+    "display_name": {
+      "type": "string",
+      "default": "Gardener"
+    },
+    "coins": {
+      "type": "integer",
+      "default": 20
+    },
+    "plants_harvested": {
+      "type": "integer",
+      "default": 0
+    }
+  },
+  "required": [
+    "owner_id"
+  ],
+  "rls": {
+    "create": true,
+    "read": true,
+    "update": true,
+    "delete": true
+  }
+}
