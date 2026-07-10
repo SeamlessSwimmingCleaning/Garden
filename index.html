@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app" class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>🌱 Garden Game</h1>
+            </div>
+            <div class="header-right">
+                <div class="stat">
+                    <span class="stat-label">Coins:</span>
+                    <span id="coinCount" class="stat-value">100</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Plots:</span>
+                    <span id="plotCount" class="stat-value">2</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab-button active" data-tab="garden">🌿 Garden</button>
+            <button class="tab-button" data-tab="seeds">🌾 Seeds & Crops</button>
+            <button class="tab-button" data-tab="shop">🏪 Shop</button>
+            <button class="tab-button" data-tab="plants-info">📚 Plant Details</button>
+        </nav>
+
+        <!-- Tab Contents -->
+        <main class="tabs-content">
+            
+            <!-- Garden Tab -->
+            <section id="garden-tab" class="tab-content active">
+                <div class="section-title">Your Garden</div>
+                <div id="garden-grid" class="garden-grid"></div>
+            </section>
+
+            <!-- Seeds & Crops Tab -->
+            <section id="seeds-tab" class="tab-content">
+                <div class="section-title">Seeds & Crops Inventory</div>
+                <div class="inventory-container">
+                    <div id="seeds-inventory" class="inventory-section">
+                        <h3>🌱 Seeds</h3>
+                        <div id="seeds-list" class="items-grid"></div>
+                    </div>
+                    <div id="crops-inventory" class="inventory-section">
+                        <h3>🌽 Harvested Crops</h3>
+                        <div id="crops-list" class="items-grid"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shop Tab -->
+            <section id="shop-tab" class="tab-content">
+                <div class="section-title">Plant Shop</div>
+                <div id="plant-shop" class="shop-grid"></div>
+            </section>
+
+            <!-- Plant Details Tab -->
+            <section id="plants-info-tab" class="tab-content">
+                <div class="section-title">Plant Encyclopedia</div>
+                <div id="plants-info-search" class="search-container">
+                    <input type="text" id="plant-search" placeholder="Search plants...">
+                </div>
+                <div id="plants-info-list" class="plants-info-grid"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal for planting -->
+    <div id="plant-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2>Plant Selection</h2>
+            <div id="modal-seeds-list" class="modal-seeds-grid"></div>
+        </div>
+    </div>
+
+    <!-- Modal for plant details in garden -->
+    <div id="plot-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div id="plot-details" class="plot-details-container"></div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="game.js"></script>
+</body>
+</html>
