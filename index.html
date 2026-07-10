@@ -1,12 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>GARDEN</title>
-    </head>
-    <body>
-        <div id="root"></div>
-        <script type="module" src="main.jsx"></script>
-    </body>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Grow Your Garden Game</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f0f8ff; margin: 20px; }
+  h1 { text-align: center; }
+  #stats { display: flex; justify-content: space-around; margin-bottom: 20px; }
+  #garden { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .plot { width: 100px; height: 100px; background: #fff; border: 2px solid #333; display: flex; justify-content: center; align-items: center; flex-direction: column; cursor: pointer; }
+  .plant { font-size: 2em; }
+  #shop { margin-bottom: 20px; }
+  button { margin: 5px; padding: 10px; font-size: 1em; }
+</style>
+</head>
+<body>
+
+<h1>Grow Your Garden</h1>
+<div id="stats">
+  <div>Coins: <span id="coins">20</span></div>
+  <div>Land plots: <span id="land">2</span></div>
+  <div>Buy Land (25 coins)</div>
+</div>
+
+<h2>Garden</h2>
+<div id="garden"></div>
+
+<h2>Shop</h2>
+<div id="shop"></div>
+
+<script>
+const initialCoins = 20;
+let coins = initialCoins;
+let landPlots = 2;
+const maxPlots = 10;
+
+const plantsData = {
+  "Apple": { cost: 10, growTime: 60, phases: ["🌱", "🌿", "🍎"], rewards: 15 },
+  "Arrowroot": { cost: 8, growTime: 50, phases: ["🌱", "🌿", "🌾"], rewards: 12 },
+  "Arugula": { cost: 6, growTime: 40, phases: ["🌱", "🌿", "🥗"], rewards: 10 },
+  "Artichoke": { cost: 12, growTime: 70, phases: ["🌱", "🌿", "🌸"], rewards: 18 },
+  "Asparagus": { cost: 15, growTime: 80, phases: ["🌱", "🌿", "🥦"], rewards: 20 },
+  "Avocado": { cost: 20, growTime: 120, phases: ["🌱", "🌿", "🥑"], rewards: 30 },
+  "Banana": { cost: 10, growTime: 60, phases: ["🌱", "🌿", "🍌"], rewards: 15 },
+  "Basil": { cost: 4, growTime: 30, phases: ["🌱", "🌿", "🌿"], rewards: 8 },
+  "Blackberry": { cost: 12, growTime: 70, phases: ["🌱", "🌿", "🫐"], rewards: 18 },
+  "Blueberry": { cost: 12, growTime: 70, phases: ["🌱", "🌿", "🫐"], rewards: 18 },
+  "Bok Choy": { cost: 8, growTime: 50, phases: ["🌱", "🌿", "🥬"], rewards: 12 },
+  "Broccoli": { cost: 8, growTime: 50, phases: ["🌱", "🌿", "🥦"], rewards: 12 },
+  "Brussels Sprouts": { cost: 10, growTime: 60, phases: ["🌱", "🌿", "🥗"], rewards: 15 },
+  // Add more plants as needed
+};
+
+const ownedPlants = []; // {type, startTime, status, phaseIndex, lastWatered, plotIndex}
+
+const maxPhases = 3; // based on phases array length
+
+// Create garden plots
+const gardenDiv = document.getElementById('garden');
+
+function createGarden() {
+  gardenDiv.innerHTML = '';
+  for (let i = 0; i < landPlots; i++) {
+    const plotDiv = document.createElement('div');
+    plotDiv.className = 'plot';
+    plotDiv.dataset.index = i;
+    plotDiv.onclick = () => {
+      plantOnPlot(i);
+    };
+    updatePlotDisplay(plotDiv, i);
+    gardenDiv.appendChild(plotDiv);
+  }
+}
+
+// Update individual plot display
+function updatePlotDisplay(plotDiv, index) {
+  const plant = ownedPlants.find(p => p.plotIndex === index);
+  if (plant) {
+    // Show plant phase emoji
+    plotDiv.innerHTML = `<div class="plant">${plantsData[plant.type].phases[plant.phaseIndex]}</div><div>${plant.status}</div>`;
+  } else {
+    plotDiv.innerHTML = 'Empty';
+  }
+}
+
+// Refresh all plots
+function refreshGarden() {
+  const plots = document.querySelectorAll('.plot');
+  plots.forEach((plot, i) => updatePlotDisplay(plot, i));
+}
+
+// Plant on plot
+function plantOnPlot(plotIndex) {
+  if (ownedPlants.some(p => p.plotIndex === plotIndex)) {
+    alert('This plot already has a plant.');
+    return;
+  }
+  // Show plant options
+  const plantNames = Object.keys(plantsData);
+  const choice = prompt("Enter plant name to plant:\n" + plantNames.join(', '));
+  if (choice && plantsData[choice]) {
+    if (coins >= plantsData[choice].cost) {
+      coins -= plantsData[choice].cost;
+      ownedPlants.push({
+        type: choice,
+        startTime: Date.now(),
+        status: 'Growing',
+        phaseIndex: 0,
+        lastWatered: Date.now(),
+        plotIndex: plotIndex,
+      });
+      saveGame();
+      createGarden();
+      updateDisplay();
+    } else {
+      alert('Not enough coins.');
+    }
+  } else {
+    alert('Invalid plant choice.');
+  }
+}
+
+// Update stats display
+function updateDisplay() {
+  document.getElementById('coins').innerText = coins;
+  document.getElementById('land').innerText = landPlots;
+}
+
+// Check plants growth
+function checkPlants() {
+  const now = Date.now();
+  let changed = false;
+  ownedPlants.forEach(plant => {
+    // Check if plant is dead due to no watering
+    if (now - plant.lastWatered > 3600 * 1000) { // 1 hour
+      // Plant dies
+      alert(`Your ${plant.type} has died due to lack of water.`);
+      ownedPlants.splice(ownedPlants.indexOf(plant),1);
+      landPlots++;
+      changed = true;
+    } else {
+      // Check growth
+      const plantData = plantsData[plant.type];
+      const elapsed = (now - plant.startTime) / 1000; // seconds
+      if (elapsed >= plantData.growTime) {
+        plant.status = 'Ready!';
+        // Harvest automatically
+        coins += plantData.rewards;
+        alert(`Your ${plant.type} is ready! You gained ${plantData.rewards} coins.`);
+        ownedPlants.splice(ownedPlants.indexOf(plant),1);
+        landPlots++;
+        changed = true;
+      } else {
+        // Update phase
+        const phaseDuration = plantData.growTime / plantData.phases.length;
+        plant.phaseIndex = Math.min(Math.floor(elapsed / phaseDuration), plantData.phases.length -1);
+      }
+    }
+  });
+  if (changed) {
+    createGarden();
+    updateDisplay();
+    saveGame();
+  } else {
+    // Just refresh display
+    createGarden();
+  }
+}
+
+// Water plant
+function waterPlant(plotIndex) {
+  const plant = ownedPlants.find(p => p.plotIndex === plotIndex);
+  if (plant) {
+    plant.lastWatered = Date.now();
+    alert(`Watered your ${plant.type}`);
+    saveGame();
+  }
+}
+
+// Buy land
+function buyLand() {
+  if (coins >= 25 && landPlots < maxPlots) {
+    coins -= 25;
+    landPlots++;
+    createGarden();
+    updateDisplay();
+    saveGame();
+  } else {
+    alert('Not enough coins or max plots reached.');
+  }
+}
+
+// Create shop buttons
+function createShop() {
+  const shopDiv = document.getElementById('shop');
+  shopDiv.innerHTML = '';
+  for (const plantName in plantsData) {
+    const btn = document.createElement('button');
+    btn.innerText = `${plantName} (${plantsData[plantName].cost} coins)`;
+    btn.onclick = () => {
+      if (coins >= plantsData[plantName].cost) {
+        coins -= plantsData[plantName].cost;
+        saveGame();
+        updateDisplay();
+      } else {
+        alert('Not enough coins.');
+      }
+    };
+    shopDiv.appendChild(btn);
+  }
+  // Buy land button
+  const buyLandBtn = document.createElement('button');
+  buyLandBtn.innerText = 'Buy Land (25 coins)';
+  buyLandBtn.onclick = buyLand;
+  shopDiv.appendChild(buyLandBtn);
+}
+
+// Save game state
+function saveGame() {
+  localStorage.setItem('gardenGame', JSON.stringify({
+    coins,
+    landPlots,
+    ownedPlants,
+  }));
+}
+
+// Load game state
+function loadGame() {
+  const data = localStorage.getItem('gardenGame');
+  if (data) {
+    const state = JSON.parse(data);
+    coins = state.coins;
+    landPlots = state.landPlots;
+    ownedPlants.length = 0;
+    state.ownedPlants.forEach(p => ownedPlants.push(p));
+  }
+}
+
+// Initialize game
+function init() {
+  loadGame();
+  createGarden();
+  createShop();
+  updateDisplay();
+  setInterval(checkPlants, 5000);
+}
+
+init();
+</script>
+
+</body>
 </html>
