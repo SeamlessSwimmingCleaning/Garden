@@ -6,701 +6,634 @@
 <title>🌻 My Garden</title>
 <style>
   :root {
-    --bg: #ffffff;
-    --fg: #1c1917;
-    --muted: #78716c;
-    --border: #e7e5e4;
-    --primary: #059669;
-    --primary-hover: #047857;
-    --primary-fg: #ffffff;
-    --secondary: #f5f5f4;
-    --secondary-hover: #e7e5e4;
-    --amber: #d97706;
-    --amber-bg: #fffbeb;
-    --amber-border: #fcd34d;
-    --emerald-bg: #ecfdf5;
-    --emerald-border: #6ee7b7;
-    --orange-bg: #fff7ed;
-    --orange-border: #fdba74;
-    --green-bg: #f0fdf4;
-    --green-border: #bbf7d0;
-    --stone-bg: #f5f5f4;
-    --stone-border: #d6d3d1;
-    --red: #dc2626;
-    --blue: #3b82f6;
-    --radius: 0.75rem;
+    --bg:#fff; --fg:#1c1917; --muted:#78716c; --border:#e7e5e4;
+    --primary:#059669; --primary-hover:#047857; --primary-fg:#fff;
+    --secondary:#f5f5f4; --amber:#d97706; --amber-bg:#fffbeb; --amber-border:#fcd34d;
+    --emerald-bg:#ecfdf5; --emerald-border:#6ee7b7;
+    --orange-bg:#fff7ed; --orange-border:#fdba74;
+    --green-bg:#f0fdf4; --green-border:#bbf7d0;
+    --stone-bg:#f5f5f4; --stone-border:#d6d3d1;
+    --red:#dc2626; --blue:#3b82f6; --radius:0.75rem;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(to bottom, #ecfdf5 30%, #ffffff 60%, #fffbeb 90%);
-    color: var(--fg);
-    min-height: 100vh;
-    -webkit-tap-highlight-color: transparent;
-  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:linear-gradient(to bottom,#ecfdf5 30%,#fff 60%,#fffbeb 90%);
+    color:var(--fg);min-height:100vh;-webkit-tap-highlight-color:transparent}
+  header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,0.82);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .header-inner{max-width:896px;margin:0 auto;padding:12px 16px;
+    display:flex;align-items:center;justify-content:space-between}
+  .logo{display:flex;align-items:center;gap:8px}
+  .logo h1{font-size:18px;font-weight:700;letter-spacing:-0.02em}
+  .header-right{display:flex;align-items:center;gap:12px}
+  .coin-badge{display:flex;align-items:center;gap:4px;background:var(--amber-bg);
+    padding:4px 10px;border-radius:999px;border:1px solid var(--amber-border);
+    font-weight:700;color:var(--amber);font-size:14px}
+  .harvest-badge{display:none;align-items:center;gap:4px;color:var(--muted);font-size:12px}
+  @media(min-width:640px){.harvest-badge{display:flex}}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    padding:8px 14px;border-radius:var(--radius);font-size:14px;font-weight:600;
+    cursor:pointer;border:1px solid transparent;transition:all .15s;white-space:nowrap}
+  .btn-primary{background:var(--fg);color:#fafaf9}.btn-primary:hover{background:#292524}
+  .btn-primary:disabled{opacity:.5;cursor:not-allowed}
+  .btn-outline{background:var(--bg);color:var(--fg);border-color:var(--border)}.btn-outline:hover{background:var(--secondary)}
+  .btn-outline:disabled{opacity:.5;cursor:not-allowed}
+  .btn-emerald{background:var(--primary);color:var(--primary-fg)}.btn-emerald:hover{background:var(--primary-hover)}
+  .btn-emerald:disabled{opacity:.5;cursor:not-allowed}
+  .btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:#2563eb}
+  .btn-blue:disabled{opacity:.5;cursor:not-allowed}
+  .btn-ghost{background:transparent;color:var(--muted)}.btn-ghost:hover{background:var(--secondary);color:var(--fg)}
+  .btn-sm{padding:6px 12px;font-size:12px}
+  .btn-danger{background:var(--red);color:#fff}.btn-danger:hover{background:#b91c1c}
 
-  /* Header */
-  header {
-    position: sticky; top: 0; z-index: 40;
-    background: rgba(255,255,255,0.82);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  .header-inner {
-    max-width: 896px; margin: 0 auto;
-    padding: 12px 16px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .logo { display: flex; align-items: center; gap: 8px; }
-  .logo h1 { font-size: 18px; font-weight: 700; color: var(--fg); letter-spacing: -0.02em; }
-  .header-right { display: flex; align-items: center; gap: 12px; }
-  .coin-badge {
-    display: flex; align-items: center; gap: 4px;
-    background: var(--amber-bg);
-    padding: 4px 10px; border-radius: 999px;
-    border: 1px solid var(--amber-border);
-    font-weight: 700; color: var(--amber); font-size: 14px;
-  }
-  .harvest-badge {
-    display: none; align-items: center; gap: 4px;
-    color: var(--muted); font-size: 12px;
-  }
-  @media (min-width: 640px) { .harvest-badge { display: flex; } }
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 8px 14px; border-radius: var(--radius);
-    font-size: 14px; font-weight: 600; cursor: pointer;
-    border: 1px solid transparent; transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .btn-primary { background: var(--fg); color: #fafaf9; }
-  .btn-primary:hover { background: #292524; }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-  .btn-outline { background: var(--bg); color: var(--fg); border-color: var(--border); }
-  .btn-outline:hover { background: var(--secondary); }
-  .btn-outline:disabled { opacity: 0.5; cursor: not-allowed; }
-  .btn-emerald { background: var(--primary); color: var(--primary-fg); }
-  .btn-emerald:hover { background: var(--primary-hover); }
-  .btn-blue { background: var(--blue); color: white; }
-  .btn-blue:hover { background: #2563eb; }
-  .btn-ghost { background: transparent; color: var(--muted); }
-  .btn-ghost:hover { background: var(--secondary); color: var(--fg); }
-  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  /* Tabs */
+  .tabs-bar{position:sticky;top:57px;z-index:30;display:flex;gap:4px;
+    max-width:896px;margin:0 auto;padding:8px 16px;
+    background:rgba(255,255,255,0.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .tab-btn{flex:1;padding:10px;border-radius:var(--radius);font-size:14px;font-weight:600;
+    cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .15s;
+    display:flex;flex-direction:column;align-items:center;gap:2px}
+  .tab-btn.active{background:var(--fg);color:#fafaf9}
+  .tab-btn .tab-icon{font-size:20px}
 
-  /* Garden */
-  main { max-width: 896px; margin: 0 auto; padding: 24px 16px 60px; }
-  .grid {
-    display: grid; gap: 12px;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (min-width: 640px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (min-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+  main{max-width:896px;margin:0 auto;padding:16px 16px 80px}
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
+  @media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr)}}
+  @media(min-width:1024px){.grid{grid-template-columns:repeat(4,1fr)}}
 
-  /* Plot Card */
-  .plot {
-    position: relative; border: 2px solid; border-radius: var(--radius);
-    padding: 16px; display: flex; flex-direction: column; align-items: center;
-    min-height: 200px; transition: all 0.2s;
-  }
-  .plot-empty {
-    background: var(--amber-bg); border-style: dashed; border-color: var(--amber-border);
-    cursor: pointer; justify-content: center;
-  }
-  .plot-empty:hover { background: #fef3c7; }
-  .plot-empty .emoji { font-size: 36px; margin-bottom: 8px; }
-  .plot-empty .label { color: var(--amber); font-weight: 600; font-size: 13px; }
-  .plot-empty .hint { color: var(--amber); font-size: 11px; margin-top: 4px; opacity: 0.7; }
+  .plot{position:relative;border:2px solid;border-radius:var(--radius);padding:16px;
+    display:flex;flex-direction:column;align-items:center;min-height:200px;transition:all .2s}
+  .plot-empty{background:var(--amber-bg);border-style:dashed;border-color:var(--amber-border);
+    cursor:pointer;justify-content:center}.plot-empty:hover{background:#fef3c7}
+  .plot-empty .emoji{font-size:36px;margin-bottom:8px}
+  .plot-empty .label{color:var(--amber);font-weight:600;font-size:13px}
+  .plot-empty .hint{color:var(--amber);font-size:11px;margin-top:4px;opacity:.7}
+  .plot-dead{background:var(--stone-bg);border-color:var(--stone-border);justify-content:center}
+  .plot-dead .emoji{font-size:36px;margin-bottom:4px;filter:grayscale(1);opacity:.6}
+  .plot-dead .label{color:#78716c;font-weight:600;font-size:13px}
+  .plot-dead .sub{color:var(--red);font-size:11px;margin-top:4px}
+  .plot-growing{justify-content:flex-start}
+  .plot-ready{background:var(--emerald-bg);border-color:var(--emerald-border);box-shadow:0 6px 20px rgba(110,231,183,.3)}
+  .plot-thirsty{background:var(--orange-bg);border-color:var(--orange-border)}
+  .plot-healthy{background:var(--green-bg);border-color:var(--green-border)}
+  .badge-top{position:absolute;top:-8px;right:-8px;font-size:11px;padding:2px 8px;
+    border-radius:999px;font-weight:700;color:#fff;white-space:nowrap}
+  .badge-thirsty{background:#fb923c;animation:bounce 1.5s infinite}
+  .badge-ready{background:var(--primary);animation:pulse 2s infinite}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  .plant-emoji{font-size:48px;margin-bottom:8px;animation:growIn .4s ease-out}
+  @keyframes growIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+  .plant-name{font-weight:600;font-size:13px;text-align:center}
+  .phase-dots{display:flex;gap:4px;margin:8px 0}
+  .phase-dot{width:6px;height:6px;border-radius:999px;background:var(--border)}
+  .phase-dot.active{background:var(--primary)}
+  .progress-bar{width:100%;height:6px;background:var(--border);border-radius:999px;overflow:hidden;margin-bottom:4px}
+  .progress-fill{height:100%;background:var(--primary);border-radius:999px;transition:width .3s}
+  .time-left{font-size:10px;color:var(--muted);text-align:center}
+  .water-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);margin-bottom:8px}
+  .water-bar-bg{width:64px;height:6px;background:var(--border);border-radius:999px;overflow:hidden}
+  .water-bar-fill{height:100%;border-radius:999px;transition:width .3s}
+  .water-bar-fill.low{background:#fb923c}.water-bar-fill.ok{background:var(--blue)}
+  .actions{display:flex;gap:8px;margin-top:auto}
 
-  .plot-dead {
-    background: var(--stone-bg); border-color: var(--stone-border); justify-content: center;
-  }
-  .plot-dead .emoji { font-size: 36px; margin-bottom: 4px; filter: grayscale(1); opacity: 0.6; }
-  .plot-dead .label { color: #78716c; font-weight: 600; font-size: 13px; }
-  .plot-dead .sub { color: var(--red); font-size: 11px; margin-top: 4px; }
+  /* Overlay */
+  .overlay{position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;
+    justify-content:center;background:rgba(0,0,0,.4)}
+  .overlay.open{display:flex;animation:fadeIn .2s}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .overlay-content{width:100%;max-width:28rem;max-height:85vh;background:var(--bg);
+    border-radius:1rem 1rem 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.15);
+    display:flex;flex-direction:column;overflow:hidden;animation:slideUp .3s ease-out}
+  @media(min-width:640px){.overlay{align-items:center}.overlay-content{border-radius:1rem;animation:popIn .2s}}
+  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  @keyframes popIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+  .overlay-header{padding:20px 20px 12px;border-bottom:1px solid var(--border);
+    background:linear-gradient(to right,#ecfdf5,#fffbeb)}
+  .overlay-title{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;justify-content:space-between}
+  .overlay-coins{font-size:14px;font-weight:700;color:var(--amber)}
+  .overlay-body{padding:16px;overflow-y:auto;flex:1}
 
-  .plot-growing { justify-content: flex-start; }
-  .plot-ready { background: var(--emerald-bg); border-color: var(--emerald-border); box-shadow: 0 6px 20px rgba(110,231,183,0.3); }
-  .plot-thirsty { background: var(--orange-bg); border-color: var(--orange-border); }
-  .plot-healthy { background: var(--green-bg); border-color: var(--green-border); }
+  .search-wrap{position:relative;margin-bottom:16px}
+  .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+  .search-input{width:100%;padding:8px 12px 8px 36px;border-radius:var(--radius);
+    border:1px solid var(--border);font-size:14px;background:var(--bg);outline:none}
+  .search-input:focus{border-color:var(--primary)}
+  .plant-list{display:flex;flex-direction:column;gap:8px}
+  .plant-row{display:flex;align-items:center;gap:12px;padding:12px;border-radius:.75rem;
+    background:var(--bg);border:1px solid var(--border);cursor:pointer;transition:all .15s}
+  .plant-row:hover{border-color:var(--emerald-border);background:rgba(236,253,245,.5)}
+  .plant-row.disabled{opacity:.4;cursor:not-allowed}
+  .pemoji{font-size:22px}.pinfo{flex:1;min-width:0}
+  .pname{font-weight:600;font-size:14px}
+  .pmeta{display:flex;gap:10px;font-size:11px;color:var(--muted);margin-top:2px;flex-wrap:wrap}
+  .preward{color:var(--primary);font-weight:600}
+  .pcost{font-size:12px;font-weight:700;white-space:nowrap}
 
-  .badge-top {
-    position: absolute; top: -8px; right: -8px;
-    font-size: 11px; padding: 2px 8px; border-radius: 999px;
-    font-weight: 700; color: white; white-space: nowrap;
-  }
-  .badge-thirsty { background: #fb923c; animation: bounce 1.5s infinite; }
-  .badge-ready { background: var(--primary); animation: pulse 2s infinite; }
-  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+  .land-card{padding:24px;border-radius:1rem;background:var(--amber-bg);
+    border:2px solid var(--amber-border);text-align:center}
+  .land-card .emoji{font-size:48px;margin-bottom:12px}
+  .land-card .title{font-weight:700}
+  .land-card .sub{font-size:13px;color:var(--muted);margin-top:4px}
+  .land-card .hint{font-size:11px;color:var(--muted);margin-top:4px}
+  .land-card .btn{margin-top:16px}
+  .land-next{font-size:11px;color:var(--muted);text-align:center;margin-top:12px}
 
-  .plant-emoji {
-    font-size: 48px; margin-bottom: 8px;
-    animation: growIn 0.4s ease-out;
-  }
-  @keyframes growIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+  .empty-state .emoji{font-size:48px;margin-bottom:16px}
 
-  .plant-name { font-weight: 600; font-size: 13px; color: var(--fg); text-align: center; }
+  /* Inventory */
+  .inv-grid{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
+  @media(min-width:640px){.inv-grid{grid-template-columns:repeat(3,1fr)}}
+  .inv-card{border:2px solid var(--border);border-radius:var(--radius);padding:16px;
+    display:flex;flex-direction:column;align-items:center;text-align:center;background:var(--bg)}
+  .inv-card .emoji{font-size:40px;margin-bottom:8px}
+  .inv-card .name{font-weight:600;font-size:13px}
+  .inv-card .qty{font-size:12px;color:var(--muted);margin-top:2px}
+  .inv-card .btn{margin-top:10px;width:100%}
 
-  .phase-dots { display: flex; gap: 4px; margin: 8px 0; }
-  .phase-dot { width: 6px; height: 6px; border-radius: 999px; background: var(--border); }
-  .phase-dot.active { background: var(--primary); }
+  /* Market */
+  .market-grid{display:grid;gap:12px;grid-template-columns:1fr}
+  .market-row{display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--radius);
+    border:1px solid var(--border);background:var(--bg)}
+  .market-row.mine{border-color:var(--amber-border);background:var(--amber-bg)}
+  .market-row .emoji{font-size:32px}
+  .market-row .info{flex:1;min-width:0}
+  .market-row .name{font-weight:600;font-size:14px}
+  .market-row .seller{font-size:11px;color:var(--muted);margin-top:2px}
+  .market-row .price{font-size:14px;font-weight:700;color:var(--amber)}
+  .section-title{font-size:15px;font-weight:700;margin-bottom:12px;margin-top:8px;
+    display:flex;align-items:center;gap:6px}
 
-  .progress-bar { width: 100%; height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; margin-bottom: 4px; }
-  .progress-fill { height: 100%; background: var(--primary); border-radius: 999px; transition: width 0.3s; }
-  .time-left { font-size: 10px; color: var(--muted); text-align: center; }
+  .price-input{width:70px;padding:6px 8px;border-radius:var(--radius);
+    border:1px solid var(--border);font-size:14px;text-align:center}
+  .price-input:focus{border-color:var(--primary);outline:none}
 
-  .water-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-  .water-bar-bg { width: 64px; height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; }
-  .water-bar-fill { height: 100%; border-radius: 999px; transition: width 0.3s; }
-  .water-bar-fill.low { background: #fb923c; }
-  .water-bar-fill.ok { background: var(--blue); }
-
-  .actions { display: flex; gap: 8px; margin-top: auto; }
-
-  /* Modal / Overlay */
-  .overlay {
-    position: fixed; inset: 0; z-index: 50;
-    display: none; align-items: flex-end; justify-content: center;
-    background: rgba(0,0,0,0.4);
-  }
-  .overlay.open { display: flex; animation: fadeIn 0.2s; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .overlay-content {
-    width: 100%; max-width: 28rem; max-height: 85vh;
-    background: var(--bg); border-radius: 1rem 1rem 0 0;
-    box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
-    display: flex; flex-direction: column; overflow: hidden;
-    animation: slideUp 0.3s ease-out;
-  }
-  @media (min-width: 640px) { .overlay { align-items: center; } .overlay-content { border-radius: 1rem; animation: popIn 0.2s; } }
-  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-  .overlay-header { padding: 20px 20px 12px; border-bottom: 1px solid var(--border); background: linear-gradient(to right, #ecfdf5, #fffbeb); }
-  .overlay-title { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; justify-content: space-between; }
-  .overlay-coins { font-size: 14px; font-weight: 700; color: var(--amber); }
-  .overlay-body { padding: 16px; overflow-y: auto; flex: 1; }
-
-  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-  .tab { padding: 6px 12px; border-radius: var(--radius); font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg); }
-  .tab.active { background: var(--fg); color: #fafaf9; border-color: var(--fg); }
-
-  .search-wrap { position: relative; margin-bottom: 16px; }
-  .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); }
-  .search-input {
-    width: 100%; padding: 8px 12px 8px 36px; border-radius: var(--radius);
-    border: 1px solid var(--border); font-size: 14px; background: var(--bg);
-    outline: none;
-  }
-  .search-input:focus { border-color: var(--primary); }
-
-  .plant-list { display: flex; flex-direction: column; gap: 8px; }
-  .plant-row {
-    display: flex; align-items: center; gap: 12px; padding: 12px;
-    border-radius: 0.75rem; background: var(--bg);
-    border: 1px solid var(--border);
-    cursor: pointer; transition: all 0.15s;
-  }
-  .plant-row:hover { border-color: var(--emerald-border); background: rgba(236,253,245,0.5); }
-  .plant-row:disabled, .plant-row.disabled { opacity: 0.4; cursor: not-allowed; }
-  .plant-row .pemoji { font-size: 22px; }
-  .plant-row .pinfo { flex: 1; min-width: 0; }
-  .plant-row .pname { font-weight: 600; font-size: 14px; }
-  .plant-row .pmeta { display: flex; gap: 10px; font-size: 11px; color: var(--muted); margin-top: 2px; flex-wrap: wrap; }
-  .plant-row .preward { color: var(--primary); font-weight: 600; }
-  .plant-row .pcost { font-size: 12px; font-weight: 700; color: var(--fg); white-space: nowrap; }
-
-  .land-card { padding: 24px; border-radius: 1rem; background: var(--amber-bg); border: 2px solid var(--amber-border); text-align: center; }
-  .land-card .emoji { font-size: 48px; margin-bottom: 12px; }
-  .land-card .title { font-weight: 700; color: var(--fg); }
-  .land-card .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
-  .land-card .hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .land-card .btn { margin-top: 16px; }
-  .land-next { font-size: 11px; color: var(--muted); text-align: center; margin-top: 12px; }
-
-  .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); }
-  .empty-state .emoji { font-size: 48px; margin-bottom: 16px; }
-
-  .loading-screen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(to bottom, #ecfdf5, #fffbeb); }
-  .loading-content { text-align: center; }
-  .loading-emoji { font-size: 64px; margin-bottom: 16px; animation: sway 2s infinite; }
-  @keyframes sway { 0%,100% { transform: rotate(0); } 25% { transform: rotate(10deg); } 75% { transform: rotate(-10deg); } }
-  .loading-text { color: var(--muted); font-weight: 600; }
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+    background:var(--fg);color:#fafaf9;padding:10px 20px;border-radius:999px;
+    font-size:14px;font-weight:600;z-index:100;animation:toastIn .3s;
+    box-shadow:0 4px 20px rgba(0,0,0,.2)}
+  @keyframes toastIn{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+  .name-input{padding:6px 10px;border-radius:var(--radius);border:1px solid var(--border);
+    font-size:14px;background:var(--bg);max-width:140px}
+  .name-input:focus{border-color:var(--primary);outline:none}
+  .loading-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(to bottom,#ecfdf5,#fffbeb)}
+  .loading-emoji{font-size:64px;margin-bottom:16px;animation:sway 2s infinite}
+  @keyframes sway{0%,100%{transform:rotate(0)}25%{transform:rotate(10deg)}75%{transform:rotate(-10deg)}}
+  .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--primary);
+    border-radius:999px;animation:spin .8s linear infinite;margin:20px auto}
+  @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 <div id="app"></div>
-
 <script>
-// ═══════════════════════════════════════
-// PLANT DATA
-// ═══════════════════════════════════════
-const PLANTS = {
-  Apple:              { cost: 8,  reward: 25, growthHours: 720,  waterInterval: 24, phases: ["🌱","🌿","🪴","🌳","🌸","🍏","🍎"] },
-  Arrowroot:          { cost: 3,  reward: 8,  growthHours: 120,  waterInterval: 12, phases: ["🌱","🌿","☘️","🪴","🥔"] },
-  Arugula:            { cost: 1,  reward: 3,  growthHours: 6,    waterInterval: 6,  phases: ["🌱","🌿","🥬","🥗"] },
-  Artichoke:          { cost: 4,  reward: 12, growthHours: 168,  waterInterval: 18, phases: ["🌱","🌿","🪴","🌾","🌺","🥦"] },
-  Asparagus:          { cost: 5,  reward: 18, growthHours: 360,  waterInterval: 18, phases: ["🌱","🌿","🪴","🌾","🌿","🥒"] },
-  Avocado:            { cost: 10, reward: 35, growthHours: 1440, waterInterval: 48, phases: ["🌱","🌿","🪴","🌳","🌸","🟢","🥑"] },
-  Banana:             { cost: 9,  reward: 30, growthHours: 960,  waterInterval: 36, phases: ["🌱","🌿","🪴","🌴","🌸","🍌"] },
-  Basil:              { cost: 1,  reward: 3,  growthHours: 4,    waterInterval: 6,  phases: ["🌱","🌿","☘️","🌿","🍃"] },
-  Blackberry:         { cost: 5,  reward: 15, growthHours: 240,  waterInterval: 18, phases: ["🌱","🌿","🪴","🌸","🫐","⚫"] },
-  Blueberry:          { cost: 5,  reward: 15, growthHours: 240,  waterInterval: 18, phases: ["🌱","🌿","🪴","🌸","🫐"] },
-  "Bok Choy":         { cost: 2,  reward: 5,  growthHours: 12,   waterInterval: 8,  phases: ["🌱","🌿","☘️","🥬","🥬"] },
-  Broccoli:           { cost: 3,  reward: 8,  growthHours: 72,   waterInterval: 12, phases: ["🌱","🌿","🪴","🌾","🥦"] },
-  "Brussels Sprouts": { cost: 4,  reward: 12, growthHours: 168,  waterInterval: 18, phases: ["🌱","🌿","🪴","🌾","🌿","🥬"] },
-  Cabbage:            { cost: 2,  reward: 6,  growthHours: 48,   waterInterval: 12, phases: ["🌱","🌿","☘️","🥬","🥬"] },
-  Cantaloupe:         { cost: 4,  reward: 12, growthHours: 168,  waterInterval: 18, phases: ["🌱","🌿","🪴","🌸","🟡","🍈"] },
-  Carrot:             { cost: 2,  reward: 5,  growthHours: 24,   waterInterval: 10, phases: ["🌱","🌿","☘️","🥕","🥕"] },
-  Cauliflower:        { cost: 3,  reward: 8,  growthHours: 72,   waterInterval: 12, phases: ["🌱","🌿","🪴","🌾","🥦"] },
-  Celery:             { cost: 2,  reward: 6,  growthHours: 48,   waterInterval: 10, phases: ["🌱","🌿","☘️","🌿","🥬"] },
-  Cherry:             { cost: 7,  reward: 22, growthHours: 480,  waterInterval: 24, phases: ["🌱","🌿","🪴","🌳","🌸","🍒"] },
-  Chives:             { cost: 1,  reward: 3,  growthHours: 8,    waterInterval: 8,  phases: ["🌱","🌿","🌾","🌿","🍃"] },
-  Cilantro:           { cost: 1,  reward: 3,  growthHours: 6,    waterInterval: 6,  phases: ["🌱","🌿","☘️","🍃"] },
-  "Collard Greens":   { cost: 2,  reward: 6,  growthHours: 36,   waterInterval: 10, phases: ["🌱","🌿","☘️","🥬","🥬"] },
-  Corn:               { cost: 3,  reward: 8,  growthHours: 96,   waterInterval: 14, phases: ["🌱","🌿","🪴","🌾","🌽"] },
-  Cucumber:           { cost: 2,  reward: 5,  growthHours: 24,   waterInterval: 10, phases: ["🌱","🌿","🌸","🥒","🥒"] },
-  Date:               { cost: 12, reward: 40, growthHours: 2160, waterInterval: 72, phases: ["🌱","🌿","🪴","🌴","🌸","🟤","🫘"] },
-  Dill:               { cost: 1,  reward: 3,  growthHours: 6,    waterInterval: 6,  phases: ["🌱","🌿","🌾","🍃"] },
-  Eggplant:           { cost: 3,  reward: 9,  growthHours: 96,   waterInterval: 14, phases: ["🌱","🌿","🪴","🌸","🍆"] },
-  Fennel:             { cost: 2,  reward: 6,  growthHours: 48,   waterInterval: 12, phases: ["🌱","🌿","🌾","🌿","🧅"] },
-  Fig:                { cost: 8,  reward: 25, growthHours: 720,  waterInterval: 24, phases: ["🌱","🌿","🪴","🌳","🌸","🟤","🫐"] },
-  Garlic:             { cost: 2,  reward: 6,  growthHours: 48,   waterInterval: 14, phases: ["🌱","🌿","☘️","🧅","🧄"] },
-  Ginger:             { cost: 3,  reward: 9,  growthHours: 96,   waterInterval: 14, phases: ["🌱","🌿","🪴","🌾","🫚"] },
-  Guava:              { cost: 7,  reward: 22, growthHours: 480,  waterInterval: 24, phases: ["🌱","🌿","🪴","🌳","🌸","🍐"] },
-  Kale:               { cost: 2,  reward: 5,  growthHours: 24,   waterInterval: 10, phases: ["🌱","🌿","☘️","🥬","🥬"] },
-  Kiwi:               { cost: 6,  reward: 20, growthHours: 360,  waterInterval: 24, phases: ["🌱","🌿","🪴","🌸","🟢","🥝"] },
-  Leek:               { cost: 2,  reward: 6,  growthHours: 36,   waterInterval: 12, phases: ["🌱","🌿","🌾","🧅","🥬"] },
-  Lentils:            { cost: 3,  reward: 8,  growthHours: 72,   waterInterval: 12, phases: ["🌱","🌿","🪴","🌾","🫘"] },
-  Lettuce:            { cost: 1,  reward: 3,  growthHours: 8,    waterInterval: 6,  phases: ["🌱","🌿","☘️","🥬","🥬"] },
-  Lychee:             { cost: 10, reward: 35, growthHours: 1440, waterInterval: 48, phases: ["🌱","🌿","🪴","🌳","🌸","🔴","🍒"] },
-  Mango:              { cost: 10, reward: 35, growthHours: 1440, waterInterval: 48, phases: ["🌱","🌿","🪴","🌳","🌸","🟡","🥭"] },
-  Okra:               { cost: 2,  reward: 5,  growthHours: 24,   waterInterval: 10, phases: ["🌱","🌿","🌸","🌿","🫑"] },
-  Onion:              { cost: 2,  reward: 5,  growthHours: 36,   waterInterval: 12, phases: ["🌱","🌿","☘️","🧅","🧅"] },
-  Papaya:             { cost: 8,  reward: 28, growthHours: 720,  waterInterval: 36, phases: ["🌱","🌿","🪴","🌴","🌸","🟠","🍈"] },
-  Parsley:            { cost: 1,  reward: 3,  growthHours: 6,    waterInterval: 6,  phases: ["🌱","🌿","☘️","🍃"] },
-  Parsnip:            { cost: 2,  reward: 6,  growthHours: 48,   waterInterval: 14, phases: ["🌱","🌿","☘️","🌾","🥕"] },
-  Peach:              { cost: 7,  reward: 22, growthHours: 480,  waterInterval: 24, phases: ["🌱","🌿","🪴","🌳","🌸","🍑"] },
-  Pear:               { cost: 7,  reward: 22, growthHours: 480,  waterInterval: 24, phases: ["🌱","🌿","🪴","🌳","🌸","🍐"] },
-  Peas:               { cost: 2,  reward: 5,  growthHours: 24,   waterInterval: 10, phases: ["🌱","🌿","🌸","🫛","🫛"] },
-  Peppers:            { cost: 3,  reward: 8,  growthHours: 72,   waterInterval: 12, phases: ["🌱","🌿","🪴","🌸","🫑","🌶️"] },
-  Pineapple:          { cost: 9,  reward: 30, growthHours: 960,  waterInterval: 36, phases: ["🌱","🌿","🪴","🌾","🌸","🍍"] },
-  Plum:               { cost: 7,  reward: 22, growthHours: 480,  waterInterval: 24, phases: ["🌱","🌿","🪴","🌳","🌸","🟣","🍑"] }
+// ═══════════════════════ PLANT DATA ═══════════════════════
+const PLANTS={
+Apple:{cost:8,reward:25,growthHours:720,waterInterval:24,phases:["🌱","🌿","🪴","🌳","🌸","🍏","🍎"]},
+Arrowroot:{cost:3,reward:8,growthHours:120,waterInterval:12,phases:["🌱","🌿","☘️","🪴","🥔"]},
+Arugula:{cost:1,reward:3,growthHours:6,waterInterval:6,phases:["🌱","🌿","🥬","🥗"]},
+Artichoke:{cost:4,reward:12,growthHours:168,waterInterval:18,phases:["🌱","🌿","🪴","🌾","🌺","🥦"]},
+Asparagus:{cost:5,reward:18,growthHours:360,waterInterval:18,phases:["🌱","🌿","🪴","🌾","🌿","🥒"]},
+Avocado:{cost:10,reward:35,growthHours:1440,waterInterval:48,phases:["🌱","🌿","🪴","🌳","🌸","🟢","🥑"]},
+Banana:{cost:9,reward:30,growthHours:960,waterInterval:36,phases:["🌱","🌿","🪴","🌴","🌸","🍌"]},
+Basil:{cost:1,reward:3,growthHours:4,waterInterval:6,phases:["🌱","🌿","☘️","🌿","🍃"]},
+Blackberry:{cost:5,reward:15,growthHours:240,waterInterval:18,phases:["🌱","🌿","🪴","🌸","🫐","⚫"]},
+Blueberry:{cost:5,reward:15,growthHours:240,waterInterval:18,phases:["🌱","🌿","🪴","🌸","🫐"]},
+"Bok Choy":{cost:2,reward:5,growthHours:12,waterInterval:8,phases:["🌱","🌿","☘️","🥬","🥬"]},
+Broccoli:{cost:3,reward:8,growthHours:72,waterInterval:12,phases:["🌱","🌿","🪴","🌾","🥦"]},
+"Brussels Sprouts":{cost:4,reward:12,growthHours:168,waterInterval:18,phases:["🌱","🌿","🪴","🌾","🌿","🥬"]},
+Cabbage:{cost:2,reward:6,growthHours:48,waterInterval:12,phases:["🌱","🌿","☘️","🥬","🥬"]},
+Cantaloupe:{cost:4,reward:12,growthHours:168,waterInterval:18,phases:["🌱","🌿","🪴","🌸","🟡","🍈"]},
+Carrot:{cost:2,reward:5,growthHours:24,waterInterval:10,phases:["🌱","🌿","☘️","🥕","🥕"]},
+Cauliflower:{cost:3,reward:8,growthHours:72,waterInterval:12,phases:["🌱","🌿","🪴","🌾","🥦"]},
+Celery:{cost:2,reward:6,growthHours:48,waterInterval:10,phases:["🌱","🌿","☘️","🌿","🥬"]},
+Cherry:{cost:7,reward:22,growthHours:480,waterInterval:24,phases:["🌱","🌿","🪴","🌳","🌸","🍒"]},
+Chives:{cost:1,reward:3,growthHours:8,waterInterval:8,phases:["🌱","🌿","🌾","🌿","🍃"]},
+Cilantro:{cost:1,reward:3,growthHours:6,waterInterval:6,phases:["🌱","🌿","☘️","🍃"]},
+"Collard Greens":{cost:2,reward:6,growthHours:36,waterInterval:10,phases:["🌱","🌿","☘️","🥬","🥬"]},
+Corn:{cost:3,reward:8,growthHours:96,waterInterval:14,phases:["🌱","🌿","🪴","🌾","🌽"]},
+Cucumber:{cost:2,reward:5,growthHours:24,waterInterval:10,phases:["🌱","🌿","🌸","🥒","🥒"]},
+Date:{cost:12,reward:40,growthHours:2160,waterInterval:72,phases:["🌱","🌿","🪴","🌴","🌸","🟤","🫘"]},
+Dill:{cost:1,reward:3,growthHours:6,waterInterval:6,phases:["🌱","🌿","🌾","🍃"]},
+Eggplant:{cost:3,reward:9,growthHours:96,waterInterval:14,phases:["🌱","🌿","🪴","🌸","🍆"]},
+Fennel:{cost:2,reward:6,growthHours:48,waterInterval:12,phases:["🌱","🌿","🌾","🌿","🧅"]},
+Fig:{cost:8,reward:25,growthHours:720,waterInterval:24,phases:["🌱","🌿","🪴","🌳","🌸","🟤","🫐"]},
+Garlic:{cost:2,reward:6,growthHours:48,waterInterval:14,phases:["🌱","🌿","☘️","🧅","🧄"]},
+Ginger:{cost:3,reward:9,growthHours:96,waterInterval:14,phases:["🌱","🌿","🪴","🌾","🫚"]},
+Guava:{cost:7,reward:22,growthHours:480,waterInterval:24,phases:["🌱","🌿","🪴","🌳","🌸","🍐"]},
+Kale:{cost:2,reward:5,growthHours:24,waterInterval:10,phases:["🌱","🌿","☘️","🥬","🥬"]},
+Kiwi:{cost:6,reward:20,growthHours:360,waterInterval:24,phases:["🌱","🌿","🪴","🌸","🟢","🥝"]},
+Leek:{cost:2,reward:6,growthHours:36,waterInterval:12,phases:["🌱","🌿","🌾","🧅","🥬"]},
+Lentils:{cost:3,reward:8,growthHours:72,waterInterval:12,phases:["🌱","🌿","🪴","🌾","🫘"]},
+Lettuce:{cost:1,reward:3,growthHours:8,waterInterval:6,phases:["🌱","🌿","☘️","🥬","🥬"]},
+Lychee:{cost:10,reward:35,growthHours:1440,waterInterval:48,phases:["🌱","🌿","🪴","🌳","🌸","🔴","🍒"]},
+Mango:{cost:10,reward:35,growthHours:1440,waterInterval:48,phases:["🌱","🌿","🪴","🌳","🌸","🟡","🥭"]},
+Okra:{cost:2,reward:5,growthHours:24,waterInterval:10,phases:["🌱","🌿","🌸","🌿","🫑"]},
+Onion:{cost:2,reward:5,growthHours:36,waterInterval:12,phases:["🌱","🌿","☘️","🧅","🧅"]},
+Papaya:{cost:8,reward:28,growthHours:720,waterInterval:36,phases:["🌱","🌿","🪴","🌴","🌸","🟠","🍈"]},
+Parsley:{cost:1,reward:3,growthHours:6,waterInterval:6,phases:["🌱","🌿","☘️","🍃"]},
+Parsnip:{cost:2,reward:6,growthHours:48,waterInterval:14,phases:["🌱","🌿","☘️","🌾","🥕"]},
+Peach:{cost:7,reward:22,growthHours:480,waterInterval:24,phases:["🌱","🌿","🪴","🌳","🌸","🍑"]},
+Pear:{cost:7,reward:22,growthHours:480,waterInterval:24,phases:["🌱","🌿","🪴","🌳","🌸","🍐"]},
+Peas:{cost:2,reward:5,growthHours:24,waterInterval:10,phases:["🌱","🌿","🌸","🫛","🫛"]},
+Peppers:{cost:3,reward:8,growthHours:72,waterInterval:12,phases:["🌱","🌿","🪴","🌸","🫑","🌶️"]},
+Pineapple:{cost:9,reward:30,growthHours:960,waterInterval:36,phases:["🌱","🌿","🪴","🌾","🌸","🍍"]},
+Plum:{cost:7,reward:22,growthHours:480,waterInterval:24,phases:["🌱","🌿","🪴","🌳","🌸","🟣","🍑"]}
 };
+function getPlantData(n){return PLANTS[n]||null}
+function getAllPlants(){return Object.entries(PLANTS).map(([n,d])=>({name:n,...d})).sort((a,b)=>a.cost-b.cost)}
+function getGrowthProgress(t,at){const p=PLANTS[t];if(!p)return{phaseIndex:0,progress:0,isReady:false,currentEmoji:"🌱"};
+  const e=(Date.now()-new Date(at))/36e5;const pr=Math.min(e/p.growthHours,1);
+  const pi=Math.min(Math.floor(pr*p.phases.length),p.phases.length-1);
+  return{phaseIndex:pi,progress:pr,isReady:pr>=1,currentEmoji:p.phases[pi]}}
+function getWaterStatus(t,at){const p=PLANTS[t];if(!p||!at)return{needsWater:true,isDying:false,waterLevel:0};
+  const h=(Date.now()-new Date(at))/36e5;const w=Math.max(0,1-h/p.waterInterval);
+  return{needsWater:w<.3,isDying:w<=0,waterLevel:w}}
+function fmtTime(t,at){const p=PLANTS[t];if(!p)return"";const e=(Date.now()-new Date(at))/36e5;
+  const r=Math.max(0,p.growthHours-e);if(r<=0)return"Ready!";if(r<1)return Math.ceil(r*60)+"m left";
+  if(r<24)return Math.ceil(r)+"h left";if(r<168)return Math.ceil(r/24)+"d left";return Math.ceil(r/168)+"w left"}
+function fmtGH(h){if(h<1)return Math.round(h*60)+"m";if(h<24)return Math.round(h)+"h";
+  if(h<168)return Math.round(h/24)+"d";return Math.round(h/168)+"w"}
+function getLandCost(n){if(n<2)return 0;return Math.floor(25*Math.pow(1.5,n-2))}
 
-function getPlantData(name) { return PLANTS[name] || null; }
+// ═══════════════════════ BACKEND API ═══════════════════════
+const APP_ID=new URLSearchParams(location.search).get("appId")||"";
+const API_BASE=`/api/apps/${APP_ID}/entities`;
+function getAnonId(){let id=localStorage.getItem("garden_anon_id");if(!id){
+  id="a_"+Date.now()+"_"+Math.random().toString(36).slice(2,8);localStorage.setItem("garden_anon_id",id)}return id}
+const ANON_ID=getAnonId();
+async function api(entity,method,path,body){
+  const url=API_BASE+"/"+entity+(path?"/"+path:"");
+  const opts={method,headers:{"Content-Type":"application/json","X-App-Id":APP_ID,"X-Base44-Anonymous-Id":ANON_ID}};
+  if(body)opts.body=JSON.stringify(body);
+  const r=await fetch(url,opts);if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||r.status)}
+  return r.json()}
+async function apiList(entity,query){let url=API_BASE+"/"+entity;if(query){
+  url+="?q="+encodeURIComponent(JSON.stringify(query))}const r=await fetch(url,
+  {headers:{"X-App-Id":APP_ID,"X-Base44-Anonymous-Id":ANON_ID}});
+  if(!r.ok)throw new Error("fetch failed");return r.json()}
+async function apiFilter(entity,query,sort,limit){
+  let url=API_BASE+"/"+entity+"?q="+encodeURIComponent(JSON.stringify(query));
+  if(sort)url+="&sort="+sort;if(limit)url+="&limit="+limit;
+  const r=await fetch(url,{headers:{"X-App-Id":APP_ID,"X-Base44-Anonymous-Id":ANON_ID}});
+  if(!r.ok)throw new Error("fetch failed");return r.json()}
 
-function getAllPlants() {
-  return Object.entries(PLANTS).map(([name, data]) => ({ name, ...data })).sort((a, b) => a.cost - b.cost);
-}
+// ═══════════════════════ STATE ═══════════════════════
+const STORAGE_KEY="myGardenGame_v2";
+let state={local:{plots:[],inventory:{},totalPlots:2,plantsHarvested:0},coins:20,displayName:""};
+let profile=null; // backend profile
+let currentTab="garden";
+let marketListings=[];
 
-function getGrowthProgress(plantType, plantedAt) {
-  const plant = PLANTS[plantType];
-  if (!plant) return { phaseIndex: 0, progress: 0, isReady: false, currentEmoji: "🌱" };
-  const elapsed = (Date.now() - new Date(plantedAt).getTime()) / 3600000;
-  const progress = Math.min(elapsed / plant.growthHours, 1);
-  const phaseIndex = Math.min(Math.floor(progress * plant.phases.length), plant.phases.length - 1);
-  return { phaseIndex, progress, isReady: progress >= 1, currentEmoji: plant.phases[phaseIndex] };
-}
+function loadLocal(){
+  try{const r=localStorage.getItem(STORAGE_KEY);if(r){const d=JSON.parse(r);
+    state.local=d;if(!state.local.plots||state.local.plots.length===0){
+      state.local.plots=[emptyPlot(0),emptyPlot(1)]}
+    return}}catch(e){}
+  state.local={plots:[emptyPlot(0),emptyPlot(1)],inventory:{},totalPlots:2,plantsHarvested:0}}
+function emptyPlot(i){return{id:"p"+i,slot_index:i,plant_type:"",planted_at:null,last_watered_at:null,is_dead:false}}
+function saveLocal(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state.local))}catch(e){}}
 
-function getWaterStatus(plantType, lastWateredAt) {
-  const plant = PLANTS[plantType];
-  if (!plant || !lastWateredAt) return { needsWater: true, isDying: false, waterLevel: 0 };
-  const hoursSince = (Date.now() - new Date(lastWateredAt).getTime()) / 3600000;
-  const waterLevel = Math.max(0, 1 - (hoursSince / plant.waterInterval));
-  return { needsWater: waterLevel < 0.3, isDying: waterLevel <= 0, waterLevel };
-}
+// ═══════════════════════ PROFILE (backend) ═══════════════════════
+async function initProfile(){
+  try{
+    const existing=await apiFilter("PlayerProfile",{owner_id:ANON_ID});
+    if(existing&&existing.length>0){profile=existing[0];state.coins=profile.coins;
+      state.displayName=profile.display_name||"";
+      if(!state.displayName){state.displayName=randomName();
+        await api("PlayerProfile","PUT",profile.id,{display_name:state.displayName})}
+      return}
+    // Migrate coins from old localStorage save if available
+    let startCoins=20;
+    try{const old=JSON.parse(localStorage.getItem("myGardenGame_v1"));if(old&&typeof old.coins==="number")startCoins=old.coins}catch(e){}
+    state.displayName=randomName();
+    profile=await api("PlayerProfile","POST","",{owner_id:ANON_ID,display_name:state.displayName,
+      coins:startCoins,plants_harvested:state.local.plantsHarvested||0});
+    state.coins=profile.coins;
+    // Clean up old save
+    try{localStorage.removeItem("myGardenGame_v1")}catch(e){}
+  }catch(e){console.error("profile init failed",e);state.coins=20;state.displayName=randomName()}}
+function randomName(){const a=["Sunny","Happy","Green","Wise","Kind","Brave","Jolly","Sweet","Mighty","Little"];
+  const b=["Gardener","Farmer","Grower","Planter","Sprout","Bloom","Harvest","Seed","Root","Leaf"];
+  return a[Math.floor(Math.random()*a.length)]+" "+b[Math.floor(Math.random()*b.length)]}
+async function updateCoins(delta){if(!profile)return;const newCoins=profile.coins+delta;
+  profile.coins=newCoins;state.coins=newCoins;
+  try{await api("PlayerProfile","PUT",profile.id,{coins:newCoins})}catch(e){console.error(e)}}
+async function updateProfile(field,val){if(!profile)return;profile[field]=val;
+  try{await api("PlayerProfile","PUT",profile.id,{[field]:val})}catch(e){console.error(e)}}
+async function incHarvested(){state.local.plantsHarvested=(state.local.plantsHarvested||0)+1;
+  saveLocal();if(profile){profile.plants_harvested=(profile.plants_harvested||0)+1;
+    try{await api("PlayerProfile","PUT",profile.id,{plants_harvested:profile.plants_harvested})}catch(e){}}}
 
-function formatTimeRemaining(plantType, plantedAt) {
-  const plant = PLANTS[plantType];
-  if (!plant) return "";
-  const elapsed = (Date.now() - new Date(plantedAt).getTime()) / 3600000;
-  const remaining = Math.max(0, plant.growthHours - elapsed);
-  if (remaining <= 0) return "Ready to harvest!";
-  if (remaining < 1) return Math.ceil(remaining * 60) + "m left";
-  if (remaining < 24) return Math.ceil(remaining) + "h left";
-  if (remaining < 168) return Math.ceil(remaining / 24) + "d left";
-  return Math.ceil(remaining / 168) + "w left";
-}
+// ═══════════════════════ GARDEN ACTIONS ═══════════════════════
+function plantSeed(plotId,plantName){const p=getPlantData(plantName);
+  if(!p||state.coins<p.cost)return;const now=new Date().toISOString();
+  const plot=state.local.plots.find(x=>x.id===plotId);if(!plot)return;
+  plot.plant_type=plantName;plot.planted_at=now;plot.last_watered_at=now;plot.is_dead=false;
+  updateCoins(-p.cost);saveLocal();render()}
+function waterPlant(plotId){const plot=state.local.plots.find(x=>x.id===plotId);
+  if(!plot||!plot.plant_type||plot.is_dead)return;
+  plot.last_watered_at=new Date().toISOString();saveLocal();render()}
+function harvestPlant(plotId){const plot=state.local.plots.find(x=>x.id===plotId);
+  if(!plot||!plot.plant_type)return;const{isReady}=getGrowthProgress(plot.plant_type,plot.planted_at);
+  if(!isReady)return;
+  // Add to inventory instead of direct coins
+  state.local.inventory[plot.plant_type]=(state.local.inventory[plot.plant_type]||0)+1;
+  incHarvested();plot.plant_type="";plot.planted_at=null;plot.last_watered_at=null;plot.is_dead=false;
+  saveLocal();render();toast(" Harvested "+plot.plant_type+" → inventory!")}
+function clearDeadPlant(plotId){const plot=state.local.plots.find(x=>x.id===plotId);if(!plot)return;
+  plot.plant_type="";plot.planted_at=null;plot.last_watered_at=null;plot.is_dead=false;saveLocal();render()}
+function buyLand(){const cost=getLandCost(state.local.totalPlots);if(state.coins<cost)return;
+  state.local.totalPlots++;state.local.plots.push(emptyPlot(Date.now()));
+  updateCoins(-cost);saveLocal();closeShop();render()}
 
-function formatGrowthTime(hours) {
-  if (hours < 1) return Math.round(hours * 60) + "m";
-  if (hours < 24) return Math.round(hours) + "h";
-  if (hours < 168) return Math.round(hours / 24) + "d";
-  return Math.round(hours / 168) + "w";
-}
+function checkDeaths(){let changed=false;
+  state.local.plots.forEach(p=>{if(p.plant_type&&!p.is_dead){
+    const{isDying}=getWaterStatus(p.plant_type,p.last_watered_at);
+    if(isDying){p.is_dead=true;changed=true}}});
+  if(changed){saveLocal();render()}}
 
-function getLandCost(currentPlots) {
-  if (currentPlots < 2) return 0;
-  return Math.floor(25 * Math.pow(1.5, currentPlots - 2));
-}
+// ═══════════════════════ MARKET ACTIONS ═══════════════════════
+async function listOnMarket(plantType,price){
+  if(!state.local.inventory[plantType]||state.local.inventory[plantType]<1)return;
+  state.local.inventory[plantType]--;if(state.local.inventory[plantType]<=0)delete state.local.inventory[plantType];
+  saveLocal();
+  try{await api("MarketListing","POST","",{seller_id:ANON_ID,seller_name:state.displayName,
+    plant_type:plantType,price:price,listed_at:new Date().toISOString()});
+    toast("📝 Listed "+plantType+" for "+price+"🪙");
+    await loadMarket();closeOverlay()}catch(e){toast(" Failed to list");state.local.inventory[plantType]=(state.local.inventory[plantType]||0)+1;saveLocal()}}
+async function buyListing(listingId){
+  const listing=marketListings.find(l=>l.id===listingId);if(!listing)return;
+  if(listing.seller_id===ANON_ID)return;
+  if(state.coins<listing.price){toast("Not enough coins!");return}
+  await api("MarketListing","DELETE",listingId);
+  state.local.inventory[listing.plant_type]=(state.local.inventory[listing.plant_type]||0)+1;
+  saveLocal();
+  updateCoins(-listing.price);
+  // Add coins to seller
+  try{const sellers=await apiFilter("PlayerProfile",{owner_id:listing.seller_id});
+    if(sellers&&sellers.length>0){await api("PlayerProfile","PUT",sellers[0].id,{coins:sellers[0].coins+listing.price})}}catch(e){}
+  toast(" Bought "+listing.plant_type+" for "+listing.price+"🪙!");
+  await loadMarket();render()}
+async function takeBackListing(listingId){
+  const listing=marketListings.find(l=>l.id===listingId);if(!listing)return;
+  // Check 5 min cooldown
+  const elapsed=Date.now()-new Date(listing.listed_at);
+  if(elapsed<5*60*1000){const remaining=Math.ceil((5*60*1000-elapsed)/60000);
+    toast("⏳ Wait "+remaining+"m to take back");return}
+  await api("MarketListing","DELETE",listingId);
+  state.local.inventory[listing.plant_type]=(state.local.inventory[listing.plant_type]||0)+1;
+  saveLocal();toast(" Took back "+listing.plant_type);
+  await loadMarket();render()}
+async function loadMarket(){
+  try{marketListings=await apiList("MarketListing","-",100)}catch(e){console.error(e);marketListings=[]}}
 
-// ═══════════════════════════════════════
-// SAVE / LOAD (localStorage)
-// ═══════════════════════════════════════
-const STORAGE_KEY = "myGardenGame_v1";
+// ═══════════════════════ RENDER ═══════════════════════
+let shopTab="seeds",shopSearch="",pickerPlotId=null,pickerSearch="";
+let marketSearch="",listingPlant=null,listingPrice=0;
 
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) {}
-  return {
-    coins: 20,
-    totalPlots: 2,
-    plantsHarvested: 0,
-    plots: [
-      { id: "p0", slot_index: 0, plant_type: "", planted_at: null, last_watered_at: null, is_dead: false },
-      { id: "p1", slot_index: 1, plant_type: "", planted_at: null, last_watered_at: null, is_dead: false }
-    ]
-  };
-}
-
-function saveState() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
-}
-
-let state = loadState();
-
-// ═══════════════════════════════════════
-// GAME ACTIONS
-// ═══════════════════════════════════════
-function plantSeed(plotId, plantName) {
-  const plant = getPlantData(plantName);
-  if (!plant || state.coins < plant.cost) return;
-  const now = new Date().toISOString();
-  const plot = state.plots.find(p => p.id === plotId);
-  if (!plot) return;
-  plot.plant_type = plantName;
-  plot.planted_at = now;
-  plot.last_watered_at = now;
-  plot.is_dead = false;
-  state.coins -= plant.cost;
-  saveState();
-  render();
-}
-
-function waterPlant(plotId) {
-  const plot = state.plots.find(p => p.id === plotId);
-  if (!plot || !plot.plant_type || plot.is_dead) return;
-  plot.last_watered_at = new Date().toISOString();
-  saveState();
-  render();
-}
-
-function harvestPlant(plotId) {
-  const plot = state.plots.find(p => p.id === plotId);
-  if (!plot || !plot.plant_type) return;
-  const { isReady } = getGrowthProgress(plot.plant_type, plot.planted_at);
-  if (!isReady) return;
-  const plant = getPlantData(plot.plant_type);
-  state.coins += plant.reward;
-  state.plantsHarvested++;
-  plot.plant_type = "";
-  plot.planted_at = null;
-  plot.last_watered_at = null;
-  plot.is_dead = false;
-  saveState();
-  render();
-}
-
-function clearDeadPlant(plotId) {
-  const plot = state.plots.find(p => p.id === plotId);
-  if (!plot) return;
-  plot.plant_type = "";
-  plot.planted_at = null;
-  plot.last_watered_at = null;
-  plot.is_dead = false;
-  saveState();
-  render();
-}
-
-function buyLand() {
-  const cost = getLandCost(state.totalPlots);
-  if (state.coins < cost) return;
-  state.coins -= cost;
-  state.totalPlots++;
-  state.plots.push({ id: "p" + Date.now(), slot_index: state.totalPlots - 1, plant_type: "", planted_at: null, last_watered_at: null, is_dead: false });
-  saveState();
-  closeShop();
-  render();
-}
-
-// ═══════════════════════════════════════
-// DEATH CHECK
-// ═══════════════════════════════════════
-function checkDeaths() {
-  let changed = false;
-  state.plots.forEach(plot => {
-    if (plot.plant_type && !plot.is_dead) {
-      const { isDying } = getWaterStatus(plot.plant_type, plot.last_watered_at);
-      if (isDying) { plot.is_dead = true; changed = true; }
-    }
-  });
-  if (changed) { saveState(); render(); }
-}
-
-// ═══════════════════════════════════════
-// RENDERING
-// ═══════════════════════════════════════
-let shopTab = "seeds";
-let shopSearch = "";
-let pickerPlotId = null;
-
-function render() {
-  const app = document.getElementById("app");
-
-  if (!state) {
-    app.innerHTML = '<div class="loading-screen"><div class="loading-content"><div class="loading-emoji">🌱</div><p class="loading-text">Growing your garden...</p></div></div>';
-    return;
-  }
-
-  let html = '';
-
-  // Header
-  html += `<header><div class="header-inner">
-    <div class="logo"><span style="font-size:24px">🌻</span><h1>My Garden</h1></div>
+function render(){
+  const app=document.getElementById("app");
+  let html=`<header><div class="header-inner">
+    <div class="logo"><span style="font-size:24px">🌻</span>
+    <input class="name-input" value="${esc(state.displayName)}" onchange="onNameChange(this.value)" title="Your display name"></div>
     <div class="header-right">
       <div class="coin-badge">🪙 ${state.coins}</div>
-      <div class="harvest-badge">🌿 ${state.plantsHarvested} harvested</div>
-      <button class="btn btn-primary btn-sm" onclick="openShop()">🛒 <span class="hide-sm">Shop</span></button>
-    </div>
-  </div></header>`;
+      <div class="harvest-badge">🌿 ${state.local.plantsHarvested||0} harvested</div>
+      <button class="btn btn-primary btn-sm" onclick="openShop()">🛒<span style="display:none" class="hide-sm">Shop</span></button>
+    </div></div></header>`;
 
-  // Garden Grid
-  html += '<main><div class="grid">';
-  if (state.plots.length === 0) {
-    html += '<div class="empty-state"><div class="emoji">🌾</div><p>No plots yet. Visit the shop to get started!</p></div>';
-  }
-  state.plots.forEach(plot => { html += renderPlot(plot); });
-  html += '</div></main>';
+  // Tab bar
+  html+=`<div class="tabs-bar">
+    <button class="tab-btn ${currentTab==='garden'?'active':''}" onclick="setTab('garden')"><span class="tab-icon">🌱</span>Garden</button>
+    <button class="tab-btn ${currentTab==='inventory'?'active':''}" onclick="setTab('inventory')"><span class="tab-icon">🧺</span>Inventory</button>
+    <button class="tab-btn ${currentTab==='market'?'active':''}" onclick="setTab('market')"><span class="tab-icon">🏪</span>Market</button>
+  </div>`;
 
-  app.innerHTML = html;
+  html+="<main>";
+  if(currentTab==="garden")html+=renderGarden();
+  else if(currentTab==="inventory")html+=renderInventory();
+  else if(currentTab==="market")html+=renderMarket();
+  html+="</main>";
 
-  // Render modals if open
-  if (document.getElementById("shop-overlay")) renderShop();
-  if (document.getElementById("picker-overlay")) renderPicker();
+  app.innerHTML=html;
+
+  // Re-open any active overlays
+  if(document.getElementById("shop-overlay-marker"))openShop();
+  if(pickerPlotId)openPicker(pickerPlotId);
+  if(listingPlant)openListingModal(listingPlant);
 }
 
-function renderPlot(plot) {
-  if (!plot.plant_type) {
-    return `<div class="plot plot-empty" onclick="openPicker('${plot.id}')">
-      <div class="emoji">🟫</div>
-      <div class="label">Empty Plot</div>
-      <div class="hint">Tap to plant</div>
-    </div>`;
-  }
+function renderGarden(){
+  let h='<div class="grid">';
+  if(state.local.plots.length===0)h+='<div class="empty-state"><div class="emoji">🌾</div><p>No plots yet. Visit the shop to get started!</p></div>';
+  state.local.plots.forEach(p=>h+=renderPlot(p));
+  h+='</div>';return h;
+}
 
-  if (plot.is_dead) {
-    return `<div class="plot plot-dead">
-      <div class="emoji">🥀</div>
-      <div class="label">${plot.plant_type}</div>
-      <div class="sub">💀 Died — not watered</div>
-      <button class="btn btn-outline btn-sm" style="margin-top:12px" onclick="clearDeadPlant('${plot.id}')">✂️ Clear Plot</button>
-    </div>`;
-  }
+function renderPlot(plot){
+  if(!plot.plant_type)return`<div class="plot plot-empty" onclick="openPicker('${plot.id}')">
+    <div class="emoji">🟫</div><div class="label">Empty Plot</div><div class="hint">Tap to plant</div></div>`;
+  if(plot.is_dead)return`<div class="plot plot-dead">
+    <div class="emoji">🥀</div><div class="label">${esc(plot.plant_type)}</div>
+    <div class="sub">💀 Died — not watered</div>
+    <button class="btn btn-outline btn-sm" style="margin-top:12px" onclick="clearDeadPlant('${plot.id}')">✂️ Clear Plot</button></div>`;
+  const plant=getPlantData(plot.plant_type);
+  const{phaseIndex,progress,isReady,currentEmoji}=getGrowthProgress(plot.plant_type,plot.planted_at);
+  const{needsWater,waterLevel}=getWaterStatus(plot.plant_type,plot.last_watered_at);
+  const timeLeft=fmtTime(plot.plant_type,plot.planted_at);
+  let cls="plot plot-growing";cls+=isReady?" plot-ready":needsWater?" plot-thirsty":" plot-healthy";
+  let badge="";if(isReady)badge=`<div class="badge-top badge-ready">✨ Ready!</div>`;
+  else if(needsWater)badge=`<div class="badge-top badge-thirsty">💧 Thirsty!</div>`;
+  let dots='<div class="phase-dots">';plant.phases.forEach((_,i)=>{dots+=`<div class="phase-dot${i<=phaseIndex?" active":""}"></div>`});dots+='</div>';
+  let waterHtml="";if(!isReady)waterHtml=`<div class="water-row"><span>${needsWater?"🟠":"💧"}</span>
+    <div class="water-bar-bg"><div class="water-bar-fill ${needsWater?"low":"ok"}" style="width:${waterLevel*100}%"></div></div></div>`;
+  let action=isReady?`<button class="btn btn-emerald btn-sm" onclick="harvestPlant('${plot.id}')">✨ Harvest → 🧺</button>`
+    :`<button class="btn ${needsWater?"btn-blue":"btn-outline"} btn-sm" onclick="waterPlant('${plot.id}')">💧 Water</button>`;
+  return`<div class="${cls}">${badge}<div class="plant-emoji">${currentEmoji}</div>
+    <div class="plant-name">${esc(plot.plant_type)}</div>${dots}
+    <div class="progress-bar"><div class="progress-fill" style="width:${progress*100}%"></div></div>
+    <div class="time-left">${timeLeft}</div>${waterHtml}<div class="actions">${action}</div></div>`;
+}
 
-  const plant = getPlantData(plot.plant_type);
-  const { phaseIndex, progress, isReady, currentEmoji } = getGrowthProgress(plot.plant_type, plot.planted_at);
-  const { needsWater, waterLevel } = getWaterStatus(plot.plant_type, plot.last_watered_at);
-  const timeLeft = formatTimeRemaining(plot.plant_type, plot.planted_at);
-
-  let cls = "plot plot-growing";
-  if (isReady) cls += " plot-ready";
-  else if (needsWater) cls += " plot-thirsty";
-  else cls += " plot-healthy";
-
-  let badge = "";
-  if (isReady) badge = `<div class="badge-top badge-ready">✨ Ready!</div>`;
-  else if (needsWater) badge = `<div class="badge-top badge-thirsty">💧 Thirsty!</div>`;
-
-  let dots = '<div class="phase-dots">';
-  plant.phases.forEach((_, i) => {
-    dots += `<div class="phase-dot${i <= phaseIndex ? " active" : ""}"></div>`;
+function renderInventory(){
+  const entries=Object.entries(state.local.inventory).filter(([_,q])=>q>0);
+  if(entries.length===0)return`<div class="empty-state"><div class="emoji">🧺</div>
+    <p>Your basket is empty!<br>Harvest plants to fill it up.</p></div>`;
+  let h='<div class="section-title">🧺 Your Harvest</div><div class="inv-grid">';
+  entries.forEach(([name,qty])=>{
+    const plant=getPlantData(name);const emoji=plant?plant.phases[plant.phases.length-1]:"🌱";
+    h+=`<div class="inv-card"><div class="emoji">${emoji}</div><div class="name">${esc(name)}</div>
+      <div class="qty">x${qty}</div>
+      <button class="btn btn-primary btn-sm" onclick="openListingModal('${esc(name)}')">🏪 Sell on Market</button></div>`;
   });
-  dots += '</div>';
-
-  let waterHtml = "";
-  if (!isReady) {
-    waterHtml = `<div class="water-row">
-      <span>${needsWater ? "🟠" : "💧"}</span>
-      <div class="water-bar-bg"><div class="water-bar-fill ${needsWater ? "low" : "ok"}" style="width:${waterLevel * 100}%"></div></div>
-    </div>`;
-  }
-
-  let actionHtml;
-  if (isReady) {
-    actionHtml = `<button class="btn btn-emerald btn-sm" onclick="harvestPlant('${plot.id}')">✨ Harvest +${plant.reward}🪙</button>`;
-  } else {
-    actionHtml = `<button class="btn ${needsWater ? "btn-blue" : "btn-outline"} btn-sm" ${needsWater ? "" : ""} onclick="waterPlant('${plot.id}')">💧 Water</button>`;
-  }
-
-  return `<div class="${cls}">
-    ${badge}
-    <div class="plant-emoji">${currentEmoji}</div>
-    <div class="plant-name">${plot.plant_type}</div>
-    ${dots}
-    <div class="progress-bar"><div class="progress-fill" style="width:${progress * 100}%"></div></div>
-    <div class="time-left">${timeLeft}</div>
-    ${waterHtml}
-    <div class="actions">${actionHtml}</div>
-  </div>`;
+  h+='</div>';return h;
 }
 
-// ═══════════════════════════════════════
-// SHOP
-// ═══════════════════════════════════════
-function openShop() {
-  shopTab = "seeds";
-  shopSearch = "";
-  const overlay = document.getElementById("app");
-  const shopEl = document.createElement("div");
-  shopEl.id = "shop-overlay";
-  shopEl.className = "overlay open";
-  shopEl.onclick = (e) => { if (e.target === shopEl) closeShop(); };
-  overlay.appendChild(shopEl);
-  renderShop();
+function renderMarket(){
+  let h='';
+  const myListings=marketListings.filter(l=>l.seller_id===ANON_ID);
+  const otherListings=marketListings.filter(l=>l.seller_id!==ANON_ID)
+    .filter(l=>!marketSearch||l.plant_type.toLowerCase().includes(marketSearch.toLowerCase())||
+      (l.seller_name||"").toLowerCase().includes(marketSearch.toLowerCase()));
+
+  // My listings
+  h+=`<div class="section-title">📝 My Listings (${myListings.length})</div>`;
+  if(myListings.length===0)h+=`<div class="empty-state" style="padding:30px"><p style="font-size:13px">No active listings. Sell from your inventory!</p></div>`;
+  else{h+='<div class="market-grid">';
+    myListings.forEach(l=>{const plant=getPlantData(l.plant_type);
+      const emoji=plant?plant.phases[plant.phases.length-1]:"🌱";
+      h+=`<div class="market-row mine"><div class="emoji">${emoji}</div>
+        <div class="info"><div class="name">${esc(l.plant_type)}</div>
+        <div class="seller">You • ${fmtListTime(l.listed_at)}</div></div>
+        <div class="price">${l.price}🪙</div>
+        <button class="btn btn-outline btn-sm" onclick="takeBackListing('${l.id}')">↩️ Take Back</button></div>`});
+    h+='</div>'}
+
+  // Other listings
+  h+=`<div class="section-title" style="margin-top:20px">🛒 Farmers Market (${otherListings.length})</div>`;
+  h+=`<div class="search-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input class="search-input" placeholder="Search crops or sellers..." value="${esc(marketSearch)}" oninput="marketSearch=this.value;render()"></div>`;
+  if(otherListings.length===0)h+=`<div class="empty-state" style="padding:30px"><div class="emoji">🏪</div>
+    <p>No crops for sale right now.<br>Check back later or list your own!</p></div>`;
+  else{h+='<div class="market-grid">';
+    otherListings.forEach(l=>{const plant=getPlantData(l.plant_type);
+      const emoji=plant?plant.phases[plant.phases.length-1]:"🌱";
+      const canBuy=state.coins>=l.price;
+      h+=`<div class="market-row"><div class="emoji">${emoji}</div>
+        <div class="info"><div class="name">${esc(l.plant_type)}</div>
+        <div class="seller">by ${esc(l.seller_name||"Unknown")}</div></div>
+        <div class="price">${l.price}🪙</div>
+        <button class="btn ${canBuy?"btn-emerald":"btn-outline"} btn-sm" ${canBuy?"":"disabled"} onclick="buyListing('${l.id}')">${canBuy?"Buy":"Too pricey"}</button></div>`});
+    h+='</div>'}
+  return h;
 }
 
-function closeShop() {
-  const el = document.getElementById("shop-overlay");
-  if (el) el.remove();
-}
+function fmtListTime(at){const e=Date.now()-new Date(at);if(e<60000)return"Just now";
+  if(e<3600000)return Math.floor(e/60000)+"m ago";if(e<86400000)return Math.floor(e/3600000)+"h ago";
+  return Math.floor(e/86400000)+"d ago"}
 
-function renderShop() {
-  const el = document.getElementById("shop-overlay");
-  if (!el) return;
-  const landCost = getLandCost(state.totalPlots);
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 
-  let body = "";
-  if (shopTab === "seeds") {
-    const plants = getAllPlants().filter(p => p.name.toLowerCase().includes(shopSearch.toLowerCase()));
-    body = `<div class="search-wrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input class="search-input" placeholder="Search plants..." value="${shopSearch}" oninput="shopSearch=this.value; renderShop(); this.focus()">
-    </div>
-    <div class="plant-list">
-      ${plants.map((p, i) => `<div class="plant-row${state.coins < p.cost ? " disabled" : ""}" ${state.coins < p.cost ? "" : `onclick="buySeedFromShop('${p.name}')"`}>
-        <div class="pemoji">${p.phases[p.phases.length - 1]}</div>
-        <div class="pinfo">
-          <div class="pname">${p.name}</div>
-          <div class="pmeta">
-            <span>⏱️ ${formatGrowthTime(p.growthHours)}</span>
-            <span>💧 every ${formatGrowthTime(p.waterInterval)}</span>
-            <span class="preward">+${p.reward}🪙</span>
-          </div>
-        </div>
-        <button class="btn ${state.coins < p.cost ? "btn-outline" : "btn-primary"} btn-sm" ${state.coins < p.cost ? "disabled" : ""}>${p.cost}🪙</button>
-      </div>`).join("")}
-    </div>`;
-  } else {
-    body = `<div class="land-card">
-      <div class="emoji">🏗️</div>
-      <div class="title">Buy New Plot</div>
-      <div class="sub">You currently have ${state.totalPlots} plots</div>
+// ═══════════════════════ TABS ═══════════════════════
+function setTab(t){currentTab=t;if(t==="market")loadMarket().then(render);else render()}
+
+// ═══════════════════════ OVERLAYS ═══════════════════════
+function openOverlay(id,headerHtml,bodyHtml){
+  const el=document.createElement("div");el.id=id;el.className="overlay open";
+  el.onclick=e=>{if(e.target===el)closeOverlay()};
+  el.innerHTML=`<div class="overlay-content">${headerHtml}${bodyHtml}</div>`;
+  document.getElementById("app").appendChild(el);return el}
+function closeOverlay(){const s=document.getElementById("shop-overlay");if(s)s.remove();
+  const p=document.getElementById("picker-overlay");if(p)p.remove();
+  const l=document.getElementById("listing-overlay");if(l)l.remove();
+  pickerPlotId=null;listingPlant=null}
+function closeShop(){const s=document.getElementById("shop-overlay");if(s)s.remove()}
+
+// Shop (seeds + land)
+function openShop(){
+  closeOverlay();shopTab="seeds";shopSearch="";renderShopContent()}
+function renderShopContent(){
+  let el=document.getElementById("shop-overlay");if(!el){
+    el=openOverlay("shop-overlay",
+      `<div class="overlay-header"><div class="overlay-title">
+      <span style="display:flex;align-items:center;gap:8px">🛒 Garden Shop</span>
+      <span class="overlay-coins">🪙 ${state.coins} coins</span></div></div>`,`<div class="overlay-body" id="shop-body"></div>`);
+    el.onclick=e=>{if(e.target===el)closeShop()}}
+  const body=el.querySelector("#shop-body");
+  const landCost=getLandCost(state.local.totalPlots);
+  let html='<div class="tabs-bar" style="position:static;top:auto;border:none;padding:0 0 12px">'+
+    `<div class="tab-btn ${shopTab==='seeds'?'active':''}" onclick="shopTab='seeds';renderShopContent()">🌱 Seeds</div>`+
+    `<div class="tab-btn ${shopTab==='land'?'active':''}" onclick="shopTab='land';renderShopContent()">🟫 Land</div></div>`;
+  if(shopTab==="seeds"){
+    const plants=getAllPlants().filter(p=>p.name.toLowerCase().includes(shopSearch.toLowerCase()));
+    html+=`<div class="search-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input class="search-input" placeholder="Search plants..." value="${esc(shopSearch)}" oninput="shopSearch=this.value;renderShopContent();this.focus()"></div><div class="plant-list">`;
+    plants.forEach(p=>{const dis=state.coins<p.cost;
+      html+=`<div class="plant-row${dis?" disabled":""}" ${dis?"":`onclick="buySeedFromShop('${esc(p.name)}')"`}>
+        <div class="pemoji">${p.phases[p.phases.length-1]}</div><div class="pinfo"><div class="pname">${esc(p.name)}</div>
+        <div class="pmeta"><span>⏱️ ${fmtGH(p.growthHours)}</span><span>💧 ${fmtGH(p.waterInterval)}</span><span class="preward">sells ~${p.reward}🪙</span></div></div>
+        <button class="btn ${dis?"btn-outline":"btn-primary"} btn-sm" ${dis?"disabled":""}>${p.cost}🪙</button></div>`});
+    html+='</div>'}else{
+    html+=`<div class="land-card"><div class="emoji">🏗️</div><div class="title">Buy New Plot</div>
+      <div class="sub">You currently have ${state.local.totalPlots} plots</div>
       <div class="hint">Each new plot costs more than the last</div>
-      <button class="btn ${state.coins < landCost ? "btn-outline" : "btn-primary"}" ${state.coins < landCost ? "disabled" : ""} onclick="buyLand()">🌳 Buy for ${landCost}🪙</button>
-    </div>
-    <div class="land-next">Next plot after this will cost ${getLandCost(state.totalPlots + 1)}🪙</div>`;
-  }
+      <button class="btn ${state.coins<landCost?"btn-outline":"btn-primary"}" ${state.coins<landCost?"disabled":""} onclick="buyLand()">🌳 Buy for ${landCost}🪙</button></div>
+      <div class="land-next">Next plot after this: ${getLandCost(state.local.totalPlots+1)}🪙</div>`}
+  body.innerHTML=html}
+function buySeedFromShop(name){const empty=state.local.plots.find(p=>!p.plant_type);
+  if(empty){plantSeed(empty.id,name);closeShop()}else{toast("All plots occupied!")} }
 
-  el.innerHTML = `<div class="overlay-content">
-    <div class="overlay-header">
-      <div class="overlay-title">
-        <span style="display:flex;align-items:center;gap:8px">🛒 Garden Shop</span>
-        <span class="overlay-coins">🪙 ${state.coins} coins</span>
-      </div>
-    </div>
-    <div class="overlay-body">
-      <div class="tabs">
-        <div class="tab${shopTab === "seeds" ? " active" : ""}" onclick="shopTab='seeds'; renderShop();">🌱 Seeds</div>
-        <div class="tab${shopTab === "land" ? " active" : ""}" onclick="shopTab='land'; renderShop();">🟫 Land</div>
-      </div>
-      ${body}
-    </div>
-  </div>`;
+// Plant Picker (from empty plot)
+function openPicker(plotId){closeOverlay();pickerPlotId=plotId;pickerSearch="";renderPickerContent()}
+function renderPickerContent(){
+  let el=document.getElementById("picker-overlay");if(!el){
+    el=openOverlay("picker-overlay",
+      `<div class="overlay-header" style="background:#fff"><div class="overlay-title">
+      <span style="display:flex;align-items:center;gap:8px">🌱 Choose a Seed</span>
+      <span class="overlay-coins">🪙 ${state.coins}</span></div></div>`,`<div class="overlay-body" id="picker-body"></div>`);
+    el.onclick=e=>{if(e.target===el){pickerPlotId=null;closeOverlay()}}}
+  const body=el.querySelector("#picker-body");
+  const plants=getAllPlants().filter(p=>p.name.toLowerCase().includes(pickerSearch.toLowerCase()));
+  let html=`<div class="search-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input class="search-input" placeholder="Search..." value="${esc(pickerSearch)}" oninput="pickerSearch=this.value;renderPickerContent();this.focus()"></div><div class="plant-list">`;
+  plants.forEach(p=>{const dis=state.coins<p.cost;
+    html+=`<div class="plant-row${dis?" disabled":""}" ${dis?"":`onclick="selectSeed('${esc(p.name)}')"`}>
+      <div class="pemoji">${p.phases[p.phases.length-1]}</div><div class="pinfo"><div class="pname">${esc(p.name)}</div>
+      <div class="pmeta"><span>⏱️ ${fmtGH(p.growthHours)}</span><span class="preward">sells ~${p.reward}🪙</span></div></div>
+      <div class="pcost">${p.cost}🪙</div></div>`});
+  html+='</div>';body.innerHTML=html}
+function selectSeed(name){if(pickerPlotId){plantSeed(pickerPlotId,name);pickerPlotId=null;closeOverlay()}}
+
+// Listing Modal (sell from inventory)
+function openListingModal(plantType){
+  closeOverlay();listingPlant=plantType;
+  const plant=getPlantData(plantType);listingPrice=plant?plant.reward:5;
+  renderListingContent()}
+function renderListingContent(){
+  let el=document.getElementById("listing-overlay");if(!el){
+    el=openOverlay("listing-overlay",
+      `<div class="overlay-header" style="background:#fff"><div class="overlay-title">
+      <span style="display:flex;align-items:center;gap:8px">🏪 List on Market</span></div></div>`,`<div class="overlay-body" id="listing-body"></div>`);
+    el.onclick=e=>{if(e.target===el){listingPlant=null;closeOverlay()}}}
+  const body=el.querySelector("#listing-body");const plant=getPlantData(listingPlant);
+  const emoji=plant?plant.phases[plant.phases.length-1]:"🌱";
+  body.innerHTML=`<div style="text-align:center;padding:16px 0">
+    <div style="font-size:48px;margin-bottom:8px">${emoji}</div>
+    <div style="font-weight:700;font-size:16px">${esc(listingPlant)}</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px">You have ${state.local.inventory[listingPlant]||0} in stock</div></div>
+    <div style="margin:16px 0"><label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">Set your price (🪙 coins)</label>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input type="number" class="price-input" value="${listingPrice}" min="1" max="999" oninput="listingPrice=parseInt(this.value)||1">
+      <button class="btn btn-primary btn-sm" onclick="confirmListing()">📋 List for Sale</button></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px">Suggested price: ${plant?plant.reward:5}🪙 • Crops won't rot — take back anytime after 5 min</div></div>`}
+async function confirmListing(){
+  if(!listingPlant)return;await listOnMarket(listingPlant,listingPrice);listingPlant=null}
+
+// ═══════════════════════ MISC ═══════════════════════
+function onNameChange(v){state.displayName=v||randomName();updateProfile("display_name",state.displayName);render()}
+let toastTimer=null;
+function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;
+  document.body.appendChild(t);clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.remove(),2500)}
+async function refreshCoins(){if(!profile)return;try{const p=await api("PlayerProfile","GET",profile.id);
+  if(p&&p.coins!==state.coins){state.coins=p.coins;profile.coins=p.coins;render()}}catch(e){}}
+
+// ═══════════════════════ INIT ═══════════════════════
+async function init(){
+  document.getElementById("app").innerHTML=`<div class="loading-screen"><div style="text-align:center">
+    <div class="loading-emoji">🌻</div><p style="color:var(--muted);font-weight:600">Growing your garden...</p></div></div>`;
+  loadLocal();
+  await initProfile();
+  await loadMarket();
+  render();
+  setInterval(checkDeaths,10000);
+  setInterval(render,30000); // refresh growth progress
+  setInterval(refreshCoins,15000); // refresh coins from backend (in case someone bought from you)
 }
-
-function buySeedFromShop(plantName) {
-  const emptyPlot = state.plots.find(p => !p.plant_type);
-  if (emptyPlot) {
-    plantSeed(emptyPlot.id, plantName);
-    closeShop();
-  } else {
-    alert("All your plots are occupied! Harvest or clear one first.");
-  }
-}
-
-// ═══════════════════════════════════════
-// PLANT PICKER (from empty plot)
-// ═══════════════════════════════════════
-let pickerSearch = "";
-
-function openPicker(plotId) {
-  pickerPlotId = plotId;
-  pickerSearch = "";
-  const overlay = document.getElementById("app");
-  const pickerEl = document.createElement("div");
-  pickerEl.id = "picker-overlay";
-  pickerEl.className = "overlay open";
-  pickerEl.onclick = (e) => { if (e.target === pickerEl) closePicker(); };
-  overlay.appendChild(pickerEl);
-  renderPicker();
-}
-
-function closePicker() {
-  pickerPlotId = null;
-  const el = document.getElementById("picker-overlay");
-  if (el) el.remove();
-}
-
-function renderPicker() {
-  const el = document.getElementById("picker-overlay");
-  if (!el || !pickerPlotId) return;
-  const plants = getAllPlants().filter(p => p.name.toLowerCase().includes(pickerSearch.toLowerCase()));
-
-  el.innerHTML = `<div class="overlay-content" style="max-width:28rem">
-    <div class="overlay-header" style="background:white;border-bottom:1px solid var(--border)">
-      <div class="overlay-title" style="gap:8px">
-        <span style="display:flex;align-items:center;gap:8px">🌱 Choose a Seed</span>
-        <span class="overlay-coins">🪙 ${state.coins}</span>
-      </div>
-    </div>
-    <div class="overlay-body">
-      <div class="search-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <input class="search-input" placeholder="Search..." value="${pickerSearch}" oninput="pickerSearch=this.value; renderPicker(); this.focus()">
-      </div>
-      <div class="plant-list">
-        ${plants.map(p => `<div class="plant-row${state.coins < p.cost ? " disabled" : ""}" ${state.coins < p.cost ? "" : `onclick="selectSeed('${p.name}')"`}>
-          <div class="pemoji">${p.phases[p.phases.length - 1]}</div>
-          <div class="pinfo">
-            <div class="pname">${p.name}</div>
-            <div class="pmeta">
-              <span>⏱️ ${formatGrowthTime(p.growthHours)}</span>
-              <span class="preward">+${p.reward}🪙</span>
-            </div>
-          </div>
-          <div class="pcost">${p.cost}🪙</div>
-        </div>`).join("")}
-      </div>
-    </div>
-  </div>`;
-}
-
-function selectSeed(plantName) {
-  if (pickerPlotId) {
-    plantSeed(pickerPlotId, plantName);
-    closePicker();
-  }
-}
-
-// ═══════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════
-render();
-setInterval(checkDeaths, 10000);   // check for dead plants every 10s
-setInterval(render, 30000);         // refresh growth progress every 30s
+init();
 </script>
 </body>
 </html>
