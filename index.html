@@ -364,11 +364,20 @@ function saveLocal(){
 function onNameChange(v){
   state.displayName = v || randomName();
   updateProfile("display_name",state.displayName);
-  saveLocal();   // persist the new name locally so it survives reload if backend is unavailable
-  render();
+saveLocal();
+render();
 }
-  state.local={plots:[emptyPlot(0),emptyPlot(1)],inventory:{},totalPlots:2,plantsHarvested:0}}
-function emptyPlot(i){return{id:"p"+i,slot_index:i,plant_type:"",planted_at:null,last_watered_at:null,is_dead:false}}
+
+function emptyPlot(i){
+  return {
+    id: "p" + i,
+    slot_index: i,
+    plant_type: "",
+    planted_at: null,
+    last_watered_at: null,
+    is_dead: false
+  };
+}
 
 // ═══════════════════════ PROFILE (backend) ═══════════════════════
 async function initProfile(){
