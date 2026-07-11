@@ -345,10 +345,10 @@ function harvestPlant(plotId){const plot=state.local.plots.find(x=>x.id===plotId
   saveLocal();render();toast(" Harvested "+plot.plant_type+" → inventory!")}
 function clearDeadPlant(plotId){const plot=state.local.plots.find(x=>x.id===plotId);if(!plot)return;
   plot.plant_type="";plot.planted_at=null;plot.last_watered_at=null;plot.is_dead=false;saveLocal();render()}
-function buyLand(){const cost=getLandCost(state.local.totalPlots);if(state.coins<cost)return;
+async function buyLand(){const cost=getLandCost(state.local.totalPlots);if(state.coins<cost)return;
   state.local.totalPlots++;state.local.plots.push(emptyPlot(Date.now()));
-  updateCoins(-cost);saveLocal();closeShop();render()}
-
+  await updateCoins(-cost);
+  saveLocal();closeShop();render()}
 function checkDeaths(){let changed=false;
   state.local.plots.forEach(p=>{if(p.plant_type&&!p.is_dead){
     const{isDying}=getWaterStatus(p.plant_type,p.last_watered_at);
@@ -371,21 +371,11 @@ async function buyListing(listingId){
   await api("MarketListing","DELETE",listingId);
   state.local.inventory[listing.plant_type]=(state.local.inventory[listing.plant_type]||0)+1;
   saveLocal();
-  updateCoins(-listing.price);
+  await updateCoins(-listing.price);  // ← Add await here
   // Add coins to seller
   try{const sellers=await apiFilter("PlayerProfile",{owner_id:listing.seller_id});
     if(sellers&&sellers.length>0){await api("PlayerProfile","PUT",sellers[0].id,{coins:sellers[0].coins+listing.price})}}catch(e){}
   toast(" Bought "+listing.plant_type+" for "+listing.price+"🪙!");
-  await loadMarket();render()}
-async function takeBackListing(listingId){
-  const listing=marketListings.find(l=>l.id===listingId);if(!listing)return;
-  // Check 5 min cooldown
-  const elapsed=Date.now()-new Date(listing.listed_at);
-  if(elapsed<5*60*1000){const remaining=Math.ceil((5*60*1000-elapsed)/60000);
-    toast("⏳ Wait "+remaining+"m to take back");return}
-  await api("MarketListing","DELETE",listingId);
-  state.local.inventory[listing.plant_type]=(state.local.inventory[listing.plant_type]||0)+1;
-  saveLocal();toast(" Took back "+listing.plant_type);
   await loadMarket();render()}
 async function loadMarket(){
   try{marketListings=await apiList("MarketListing","-",100)}catch(e){console.error(e);marketListings=[]}}
