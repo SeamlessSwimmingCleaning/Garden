@@ -332,7 +332,7 @@ function plantSeed(plotId,plantName){const p=getPlantData(plantName);
   if(!p||state.coins<p.cost)return;const now=new Date().toISOString();
   const plot=state.local.plots.find(x=>x.id===plotId);if(!plot)return;
   plot.plant_type=plantName;plot.planted_at=now;plot.last_watered_at=now;plot.is_dead=false;
-  updateCoins(-p.cost);saveLocal();render()}
+  updateCoins(-p.cost);saveLocal();render()}  // ← Not awaiting updateCoins
 function waterPlant(plotId){const plot=state.local.plots.find(x=>x.id===plotId);
   if(!plot||!plot.plant_type||plot.is_dead)return;
   plot.last_watered_at=new Date().toISOString();saveLocal();render()}
