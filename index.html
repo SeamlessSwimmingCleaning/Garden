@@ -364,11 +364,11 @@ async function incHarvested(){state.local.plantsHarvested=(state.local.plantsHar
     try{await api("PlayerProfile","PUT",profile.id,{plants_harvested:profile.plants_harvested})}catch(e){}}}
 
 // ═══════════════════════ GARDEN ACTIONS ═══════════════════════
-function plantSeed(plotId,plantName){const p=getPlantData(plantName);
+async function plantSeed(plotId,plantName){const p=getPlantData(plantName);
   if(!p||state.coins<p.cost)return;const now=new Date().toISOString();
   const plot=state.local.plots.find(x=>x.id===plotId);if(!plot)return;
   plot.plant_type=plantName;plot.planted_at=now;plot.last_watered_at=now;plot.is_dead=false;
-  updateCoins(-p.cost);saveLocal();render()}  // ← Not awaiting updateCoins
+  await updateCoins(-p.cost);saveLocal();render()}  // ← Make async and await
 function waterPlant(plotId){const plot=state.local.plots.find(x=>x.id===plotId);
   if(!plot||!plot.plant_type||plot.is_dead)return;
   plot.last_watered_at=new Date().toISOString();saveLocal();render()}
@@ -395,11 +395,17 @@ function checkDeaths(){let changed=false;
 async function listOnMarket(plantType,price){
   if(!state.local.inventory[plantType]||state.local.inventory[plantType]<1)return;
   state.local.inventory[plantType]--;if(state.local.inventory[plantType]<=0)delete state.local.inventory[plantType];
-  saveLocal();
-  try{await api("MarketListing","POST","",{seller_id:ANON_ID,seller_name:state.displayName,
-    plant_type:plantType,price:price,listed_at:new Date().toISOString()});
+  saveLocal();  // ← This is fine, but also make sure displayName is synced
+  try{
+    await updateProfile("display_name", state.displayName);  // ← Add this to sync name
+    await api("MarketListing","POST","",{seller_id:ANON_ID,seller_name:state.displayName,
+      plant_type:plantType,price:price,listed_at:new Date().toISOString()});
     toast("📝 Listed "+plantType+" for "+price+"🪙");
-    await loadMarket();closeOverlay()}catch(e){toast(" Failed to list");state.local.inventory[plantType]=(state.local.inventory[plantType]||0)+1;saveLocal()}}
+    await loadMarket();closeOverlay()
+  }catch(e){
+    toast(" Failed to list");state.local.inventory[plantType]=(state.local.inventory[plantType]||0)+1;saveLocal()
+  }
+}
 async function buyListing(listingId){
   const listing=marketListings.find(l=>l.id===listingId);if(!listing)return;
   if(listing.seller_id===ANON_ID)return;
@@ -589,9 +595,9 @@ function renderShopContent(){
       <button class="btn ${state.coins<landCost?"btn-outline":"btn-primary"}" ${state.coins<landCost?"disabled":""} onclick="buyLand()">🌳 Buy for ${landCost}🪙</button></div>
       <div class="land-next">Next plot after this: ${getLandCost(state.local.totalPlots+1)}🪙</div>`}
   body.innerHTML=html}
-function buySeedFromShop(name){const empty=state.local.plots.find(p=>!p.plant_type);
-  if(empty){plantSeed(empty.id,name);closeShop()}else{toast("All plots occupied!")} }
-
+async function buySeedFromShop(name){const empty=state.local.plots.find(p=>!p.plant_type);
+  if(empty){await plantSeed(empty.id,name);closeShop()}else{toast("All plots occupied!")} }
+  
 // Plant Picker (from empty plot)
 function openPicker(plotId){closeOverlay();pickerPlotId=plotId;pickerSearch="";renderPickerContent()}
 function renderPickerContent(){
