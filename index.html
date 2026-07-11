@@ -319,54 +319,7 @@ function saveLocal(){
   }catch(e){}
 }
 
-// In initProfile(), after creating or setting the displayName, call saveLocal() so the name is stored locally.
-// Find these two places in initProfile():
 
-      if(!state.displayName){
-        state.displayName=randomName();
-        await api("PlayerProfile","PUT",profile.id,{display_name:state.displayName})
-      }
-      return
-
-// and
-
-    state.displayName=randomName();
-    profile=await api("PlayerProfile","POST","",{owner_id:ANON_ID,display_name:state.displayName,
-      coins:startCoins,plants_harvested:state.local.plantsHarvested||0});
-    state.coins=profile.coins;
-
-// Add saveLocal() after setting state.displayName/state.coins, for example:
-
-      if(!state.displayName){
-        state.displayName=randomName();
-        await api("PlayerProfile","PUT",profile.id,{display_name:state.displayName})
-      }
-      saveLocal();
-      return
-
-// and
-
-    state.displayName=randomName();
-    profile=await api("PlayerProfile","POST","",{owner_id:ANON_ID,display_name:state.displayName,
-      coins:startCoins,plants_harvested:state.local.plantsHarvested||0});
-    state.coins=profile.coins;
-    saveLocal();
-
-// Also, in the catch branch where initProfile falls back to randomName (backend unreachable), call saveLocal():
-  }catch(e){
-    console.error("profile init failed",e);
-    state.coins=20;
-    state.displayName=randomName();
-    saveLocal();
-  }
-
-// Finally, update onNameChange so a name edit is saved locally immediately (and still tries the backend):
-function onNameChange(v){
-  state.displayName = v || randomName();
-  updateProfile("display_name",state.displayName);
-saveLocal();
-render();
-}
 
 function emptyPlot(i){
   return {
