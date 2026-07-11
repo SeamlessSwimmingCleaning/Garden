@@ -287,14 +287,88 @@ let profile=null; // backend profile
 let currentTab="garden";
 let marketListings=[];
 
+// Replace the existing loadLocal and saveLocal functions with these:
+
 function loadLocal(){
-  try{const r=localStorage.getItem(STORAGE_KEY);if(r){const d=JSON.parse(r);
-    state.local=d;if(!state.local.plots||state.local.plots.length===0){
-      state.local.plots=[emptyPlot(0),emptyPlot(1)]}
-    return}}catch(e){}
+  try{
+    const r = localStorage.getItem(STORAGE_KEY);
+    if(r){
+      const d = JSON.parse(r);
+      // restore plots/inventory/etc
+      state.local = d.local || {plots:[emptyPlot(0),emptyPlot(1)],inventory:{},totalPlots:2,plantsHarvested:0};
+      // restore displayName and coins if present
+      if (typeof d.displayName === "string") state.displayName = d.displayName;
+      if (typeof d.coins === "number") state.coins = d.coins;
+      if(!state.local.plots || state.local.plots.length === 0){
+        state.local.plots = [emptyPlot(0), emptyPlot(1)];
+      }
+      return;
+    }
+  }catch(e){/* ignore */ }
+  state.local = {plots:[emptyPlot(0),emptyPlot(1)],inventory:{},totalPlots:2,plantsHarvested:0};
+}
+
+function saveLocal(){
+  try{
+    // persist the app state we care about so displayName and coins survive reloads
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      local: state.local,
+      displayName: state.displayName,
+      coins: state.coins
+    }));
+  }catch(e){}
+}
+
+// In initProfile(), after creating or setting the displayName, call saveLocal() so the name is stored locally.
+// Find these two places in initProfile():
+
+      if(!state.displayName){
+        state.displayName=randomName();
+        await api("PlayerProfile","PUT",profile.id,{display_name:state.displayName})
+      }
+      return
+
+// and
+
+    state.displayName=randomName();
+    profile=await api("PlayerProfile","POST","",{owner_id:ANON_ID,display_name:state.displayName,
+      coins:startCoins,plants_harvested:state.local.plantsHarvested||0});
+    state.coins=profile.coins;
+
+// Add saveLocal() after setting state.displayName/state.coins, for example:
+
+      if(!state.displayName){
+        state.displayName=randomName();
+        await api("PlayerProfile","PUT",profile.id,{display_name:state.displayName})
+      }
+      saveLocal();
+      return
+
+// and
+
+    state.displayName=randomName();
+    profile=await api("PlayerProfile","POST","",{owner_id:ANON_ID,display_name:state.displayName,
+      coins:startCoins,plants_harvested:state.local.plantsHarvested||0});
+    state.coins=profile.coins;
+    saveLocal();
+
+// Also, in the catch branch where initProfile falls back to randomName (backend unreachable), call saveLocal():
+  }catch(e){
+    console.error("profile init failed",e);
+    state.coins=20;
+    state.displayName=randomName();
+    saveLocal();
+  }
+
+// Finally, update onNameChange so a name edit is saved locally immediately (and still tries the backend):
+function onNameChange(v){
+  state.displayName = v || randomName();
+  updateProfile("display_name",state.displayName);
+  saveLocal();   // persist the new name locally so it survives reload if backend is unavailable
+  render();
+}
   state.local={plots:[emptyPlot(0),emptyPlot(1)],inventory:{},totalPlots:2,plantsHarvested:0}}
 function emptyPlot(i){return{id:"p"+i,slot_index:i,plant_type:"",planted_at:null,last_watered_at:null,is_dead:false}}
-function saveLocal(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state.local))}catch(e){}}
 
 // ═══════════════════════ PROFILE (backend) ═══════════════════════
 async function initProfile(){
